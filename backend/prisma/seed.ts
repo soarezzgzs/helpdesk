@@ -1,4 +1,4 @@
-import prisma from "../src/prisma/prisma";
+import {prisma} from "../src/database/prisma";
 import bcrypt from "bcrypt";
 
 async function main() {
