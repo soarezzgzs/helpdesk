@@ -10,7 +10,7 @@ class UsersController {
             name: z.string(),
             email: z.string().trim().email({message: "email inválido."}).toLowerCase(),
             password: z.string().min(6, {message: "A senha deve ter pelo menos 6 caracteres."}),
-            role: z.enum([UserRole.admin, UserRole.technician, UserRole.client]).default(UserRole.client),
+            role: z.enum([UserRole.client]),
         })
 
         const { name, email, password, role } = bodySchema.parse(req.body);
