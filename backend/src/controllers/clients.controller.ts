@@ -4,7 +4,7 @@ import { z } from "zod";
 import { hash } from "bcrypt";
 import {UserRole} from "@prisma/client";
 
-class UsersController {
+class ClientsController {
     async create(req: Request, res: Response) {
         const bodySchema = z.object({
             name: z.string(),
@@ -41,4 +41,4 @@ class UsersController {
 
 }
 
-export { UsersController }
+export { ClientsController }
