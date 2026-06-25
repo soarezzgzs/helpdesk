@@ -47,13 +47,31 @@ class TechniciansController {
 
         const hashedPassword = await hash(password, 8);
 
-        await prisma.user.create({
+        const technician = await prisma.user.create({
             data: {
                 name,
                 email,
                 password: hashedPassword,
                 role: UserRole.technician
             }
+        })
+
+        const defaultHours = [
+            "08:00",
+            "09:00",
+            "10:00",
+            "11:00",
+            "14:00",
+            "15:00",
+            "16:00",
+            "17:00",
+        ]
+
+        await prisma.technicianAvailability.createMany({
+            data: defaultHours.map(hour => ({
+                technicianId: technician.id,
+                hour
+            }))
         })
 
         return res.status(201).json({message: "Tecnico cadastrado com sucesso."})
