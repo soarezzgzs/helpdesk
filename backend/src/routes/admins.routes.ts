@@ -11,6 +11,9 @@ const adminsRoutes = Router()
 const adminsController = new AdminsController()
 
 // Rotas para Admins
-adminsRoutes.get("/", verifyAuthorization(["admin"]), adminsController.index)
+adminsRoutes.get("/", verifyAuthorization(["admin"]) ,adminsController.index)
+adminsRoutes.post("/" ,  verifyAuthorization(["admin"]),adminsController.create)
+adminsRoutes.put("/:id", verifyAuthorization(["admin"]), adminsController.update)
+adminsRoutes.delete("/:id", verifyAuthorization(["admin"]), adminsController.delete)
 
 export {adminsRoutes}
