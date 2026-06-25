@@ -6,6 +6,8 @@ import { loginRoutes } from "./login.routes";
 import { adminsRoutes } from "./admins.routes";
 import { techniciansRoutes } from "./technicians.routes";
 import { profileRoutes } from "./profile.routes";
+import { servicesRoutes } from "./services.routes";
+import {categoriesRoutes} from "./categories.routes"
 
 import {ensureAuthenticated} from "../middlewares/auth.middleware"
 
@@ -21,5 +23,7 @@ routes.use("/admins", adminsRoutes);
 routes.use("/technicians", techniciansRoutes);
 routes.use("/clients", clientRoutes);
 routes.use("/profile", profileRoutes)
+routes.use("/services", servicesRoutes)
+routes.use("/categories", categoriesRoutes)
 
 export { routes };
