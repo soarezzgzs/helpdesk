@@ -2,13 +2,15 @@ import { Router } from "express"
 
 import { ClientsController } from "../controllers/clients.controller"
 
+import { verifyAuthorization } from "../middlewares/verifyAuthorization.middleware"
 
 const clientRoutes = Router()
 
-// Instanciando o controller de cliente
 const usersController = new ClientsController()
 
-// Rota para Cliente
-clientRoutes.post("/", usersController.create)
+clientRoutes.get("/", usersController.index)
+clientRoutes.put("/:id", verifyAuthorization(["admin", "client"]), usersController.update)
+clientRoutes.patch("/password/:id", verifyAuthorization(["admin", "client"]), usersController.updatePassword)
+clientRoutes.delete("/:id", verifyAuthorization(["admin"]), usersController.delete)
 
 export { clientRoutes }
