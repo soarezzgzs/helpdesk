@@ -224,6 +224,7 @@ class TechniciansController {
 
         return res.status(200).json(availability)
     }
+
 }
 
 export {TechniciansController}

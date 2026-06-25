@@ -1,12 +1,15 @@
 import {Router} from "express"
+import multer from "multer"
 
 import { TechniciansController } from "../controllers/technicians.controller"
 
 import {verifyAuthorization} from "../middlewares/verifyAuthorization.middleware"
 
+
 const techniciansRoutes = Router()
 
 const techniciansController = new TechniciansController()
+
 
 techniciansRoutes.get("/", verifyAuthorization(["admin"]) ,techniciansController.index)
 techniciansRoutes.post("/", verifyAuthorization(["admin"]) ,techniciansController.create)
