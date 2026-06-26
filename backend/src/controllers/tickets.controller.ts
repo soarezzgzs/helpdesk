@@ -2,7 +2,7 @@ import {Request, Response} from "express";
 import { prisma } from "../database/prisma";
 import { z } from "zod";
 import {AppError} from "../utils/AppError";
-import {UserRole } from "@prisma/client";
+import {UserRole, TicketStatus } from "@prisma/client";
 import {hash, compare} from "bcrypt";
 
 class TicketsController {
@@ -294,6 +294,44 @@ class TicketsController {
 
         return res.status(200).json(formattedTickets)
         
+    }
+
+    async updateStatus(req: Request, res: Response){
+        const paramsSchema = z.object({
+            id: z.string().uuid()
+        })
+
+        const bodySchema = z.object({
+            status: z.nativeEnum(TicketStatus)
+        })
+
+        const {id} = paramsSchema.parse(req.params);
+        const {status} = bodySchema.parse(req.body);
+
+        const ticket = await prisma.ticket.findUnique({
+            where: {
+                id
+            }
+        })
+
+        if(!ticket){
+            throw new AppError("Ticket nao encontrado.", 404)
+        }
+
+        if(req.user?.role === UserRole.technician && ticket.technicianId !== req.user.id){
+            throw new AppError("Usuário nao pode alterar o status de outro tecnico.", 403)
+        }
+
+        const updatedTicket = await prisma.ticket.update({
+            where: {
+                id
+            },
+            data: {
+                status
+            }
+        })
+
+        return res.json(updatedTicket)
     }
 
 
