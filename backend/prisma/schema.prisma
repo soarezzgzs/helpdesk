@@ -50,7 +50,7 @@ model Service {
 
   active Boolean @default(true)
 
-  ticketServices TicketService[]
+  tickets Ticket[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -65,17 +65,21 @@ model Ticket {
 
   description String
 
+  serviceId String @map("service_id")
+
+  service Service @relation(fields: [serviceId], references: [id])
+
   clientId String @map("client_id")
 
-  client User @relation("ClientTickets", fields: [clientId],references: [id])
+  client User @relation("ClientTickets",fields: [clientId],references: [id],onDelete: Cascade)
 
   technicianId String @map("technician_id")
 
-  technician User @relation("TechnicianTickets", fields: [technicianId], references: [id])
+  technician User @relation("TechnicianTickets",fields: [technicianId], references: [id])
 
   status TicketStatus @default(open)
 
-  ticketServices TicketService[]
+  additionalServices AdditionalService[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -83,18 +87,20 @@ model Ticket {
   @@map("tickets")
 }
 
-model TicketService {
+model AdditionalService {
+  id String @id @default(uuid())
+
   ticketId String @map("ticket_id")
 
-  ticket Ticket @relation(fields: [ticketId],references: [id])
+  ticket Ticket @relation(fields: [ticketId],references: [id],onDelete: Cascade)
 
-  serviceId String @map("service_id")
+  description String
 
-  service Service @relation(fields: [serviceId], references: [id])
+  amount Float
 
-  @@id([ticketId, serviceId])
+  createdAt DateTime @default(now()) @map("created_at")
 
-  @@map("ticket_services")
+  @@map("additional_services")
 }
 
 model TechnicianAvailability {
@@ -102,7 +108,7 @@ model TechnicianAvailability {
 
   technicianId String @map("technician_id")
 
-  technician User @relation(fields: [technicianId], references: [id])
+  technician User @relation(fields: [technicianId],references: [id],onDelete: Cascade)
 
   hour String
 

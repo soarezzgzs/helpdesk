@@ -3,7 +3,6 @@ import { prisma } from "../database/prisma";
 import { z } from "zod";
 import {AppError} from "../utils/AppError";
 import {UserRole, TicketStatus } from "@prisma/client";
-import {hash, compare} from "bcrypt";
 
 class TicketsController {
     async create(req: Request, res: Response){
@@ -45,6 +44,10 @@ class TicketsController {
             throw new AppError("Servico nao encontrado.", 404)
         }
 
+        if(!service.active){
+            throw new AppError("Servico inativo.", 400)
+        }
+
         const technician = await prisma.user.findFirst({
             where: {
                 role: UserRole.technician
@@ -59,15 +62,9 @@ class TicketsController {
             data: {
                 title,
                 description,
+                serviceId,
                 clientId,
                 technicianId: technician.id
-            }
-        })
-
-        await prisma.ticketService.create({
-            data: {
-                ticketId: ticket.id,
-                serviceId
             }
         })
 
@@ -90,18 +87,8 @@ class TicketsController {
                 name: true
             }
         },
-
-        ticketServices: {
-            select: {
-                service: {
-                    select: {
-                        id: true,
-                        name: true,
-                        amount: true
-                    }
-                }
-            }
-        }
+        service: true,
+        additionalServices: true
     }
 })
 
@@ -110,19 +97,22 @@ class TicketsController {
         }
 
         return res.status(201).json({
-            id: ticketCreated.id,
-            title: ticketCreated.title,
-            description: ticketCreated.description,
-            status: ticketCreated.status,
+    id: ticketCreated.id,
+    title: ticketCreated.title,
+    description: ticketCreated.description,
+    status: ticketCreated.status,
 
-            client: ticketCreated.client,
+    client: ticketCreated.client,
 
-            technician: ticketCreated.technician,
+    technician: ticketCreated.technician,
 
-            services: ticketCreated.ticketServices.map(item => item.service),
+    service: ticketCreated.service,
 
-            createdAt: ticketCreated.createdAt
-        })
+    additionalServices:
+        ticketCreated.additionalServices,
+
+    createdAt: ticketCreated.createdAt
+})
     }
 
     async clientTickets(req: Request, res: Response){
@@ -148,18 +138,8 @@ class TicketsController {
                     avatarUrl: true
                 }
             },
-
-            ticketServices: {
-                select: {
-                    service: {
-                        select: {
-                            id: true,
-                            name: true,
-                            amount: true
-                        }
-                    }
-                }
-            }
+            service: true,
+            additionalServices: true
         }
     })
 
@@ -173,9 +153,9 @@ class TicketsController {
 
         technician: ticket.technician,
 
-        services: ticket.ticketServices.map(
-            item => item.service
-        ),
+        service: ticket.service,
+
+        additionalServices: ticket.additionalServices,
 
         createdAt: ticket.createdAt
     }))
@@ -206,18 +186,8 @@ class TicketsController {
                     avatarUrl: true
                 }
             },
-
-            ticketServices: {
-                select: {
-                    service: {
-                        select: {
-                            id: true,
-                            name: true,
-                            amount: true
-                        }
-                    }
-                }
-            }
+            service: true,
+            additionalServices: true,
         }
     })
 
@@ -231,9 +201,9 @@ class TicketsController {
 
         technician: ticket.technician,
 
-        services: ticket.ticketServices.map(
-            item => item.service
-        ),
+        service: ticket.service,
+
+        additionalServices: ticket.additionalServices,
 
         createdAt: ticket.createdAt
     }))
@@ -261,17 +231,8 @@ class TicketsController {
             }
         },
 
-        ticketServices: {
-            select: {
-                service: {
-                    select: {
-                        id: true,
-                        name: true,
-                        amount: true
-                    }
-                }
-            }
-        }
+        service: true,
+        additionalServices: true
     }
 })
 
@@ -285,9 +246,9 @@ class TicketsController {
 
         technician: ticket.technician,
 
-        services: ticket.ticketServices.map(
-            item => item.service
-        ),
+        service: ticket.service,
+
+        additionalServices: ticket.additionalServices,
 
         createdAt: ticket.createdAt
     }))
@@ -334,6 +295,43 @@ class TicketsController {
         return res.json(updatedTicket)
     }
 
+    async addAdditionalService(req: Request, res: Response){
+        const paramsSchema = z.object({
+            id: z.string().uuid()
+        })
+
+        const bodySchema = z.object({
+            description: z.string().trim().min(3, {message: "A descricao deve ter pelo menos 3 caracteres."}),
+            amount: z.number().positive({message: "O valor deve ser positivo."})
+        })
+
+        const {id} = paramsSchema.parse(req.params);
+        const {description, amount} = bodySchema.parse(req.body);
+
+        const ticket = await prisma.ticket.findUnique({
+            where: {
+                id
+            }
+        })
+
+        if(!ticket){
+            throw new AppError("Ticket nao encontrado.", 404)
+        }
+
+        if(req.user?.role === UserRole.technician && ticket.technicianId !== req.user.id){
+            throw new AppError("Usuário nao pode adicionar um servico ao ticket de outro tecnico.", 403)
+        }
+
+        const additionalService = await prisma.additionalService.create({
+            data: {
+                description,
+                amount,
+                ticketId: id
+            }
+        })
+
+        return res.status(201).json(additionalService)
+    }
 
 }
 
