@@ -141,6 +141,22 @@ export function TicketDetails() {
       }
     }
 
+    async function handleDeleteAdditionalService(
+  additionalServiceId: string
+) {
+  try {
+
+    await api.delete(
+      `/tickets/additional-services/${additionalServiceId}`
+    );
+
+    loadTicket();
+
+  } catch (error) {
+    console.log(error);
+  }
+}
+
   
 async function startAttendance() {
   try {
@@ -180,7 +196,7 @@ async function handleAddAdditionalService() {
   try {
 
     await api.post(
-      `/tickets/${ticket?.id}/additionalService`,
+      `/tickets/additional-services/${ticket?.id}`,
       {
         description: serviceDescription,
         amount: Number(serviceAmount)
@@ -242,6 +258,8 @@ async function handleAddAdditionalService() {
           ✕
         </button>
 
+        
+
       </div>
 
       <div className="mt-6">
@@ -271,6 +289,7 @@ async function handleAddAdditionalService() {
             mt-2
           "
         />
+        
 
       </div>
 
@@ -570,34 +589,59 @@ async function handleAddAdditionalService() {
 
                   ticket.additionalServices.map(service => (
 
-                    <div
-                      key={service.id}
-                      className="
-                        flex
-                        justify-between
-                        items-center
-                        py-4
-                        border-b
-                      "
-                    >
+  <div
+    key={service.id}
+    className="
+      flex
+      justify-between
+      items-center
+      py-4
+      border-b
+    "
+  >
 
-                      <span>
-                        {service.description}
-                      </span>
+    <span>
+      {service.description}
+    </span>
 
-                      <span>
-                        {service.amount.toLocaleString(
-                          "pt-BR",
-                          {
-                            style: "currency",
-                            currency: "BRL"
-                          }
-                        )}
-                      </span>
+    <div className="flex items-center gap-4">
 
-                    </div>
+      <span>
+        {service.amount.toLocaleString(
+          "pt-BR",
+          {
+            style: "currency",
+            currency: "BRL"
+          }
+        )}
+      </span>
 
-                  ))
+      <button
+        onClick={() =>
+          handleDeleteAdditionalService(
+            service.id
+          )
+        }
+        className="
+          h-8
+          w-8
+          rounded
+          bg-red-50
+          text-red-500
+          flex
+          items-center
+          justify-center
+          hover:bg-red-100
+        "
+      >
+        <Trash2 size={16} />
+      </button>
+
+    </div>
+
+  </div>
+
+))
 
                 )}
 

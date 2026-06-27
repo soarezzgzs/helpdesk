@@ -14,7 +14,7 @@ ticketsRoutes.get("/assigned", verifyAuthorization(["technician"]) ,ticketsContr
 ticketsRoutes.get("/admin", verifyAuthorization(["admin"]) ,ticketsController.allTickets)
 ticketsRoutes.get("/:id", verifyAuthorization(["client", "technician", "admin"]) ,ticketsController.show)
 ticketsRoutes.patch("/:id/status", verifyAuthorization(["admin", "technician"]) ,ticketsController.updateStatus)
-ticketsRoutes.post("/additionalService/:id", verifyAuthorization(["admin", "technician"]) ,ticketsController.addAdditionalService)
-ticketsRoutes.delete("/additionalService/:id", verifyAuthorization(["admin", "technician"]) ,ticketsController.deleteAdditionalService)
+ticketsRoutes.post("/additional-services/:id", verifyAuthorization(["admin", "technician"]) ,ticketsController.addAdditionalService)
+ticketsRoutes.delete("/additional-services/:id", verifyAuthorization(["admin", "technician"]) ,ticketsController.deleteAdditionalService)
 
 export {ticketsRoutes}
