@@ -6,7 +6,7 @@ import { api } from "../../services/api";
 
 import {useAuth} from "../../contexts/AuthContext"
 
-import {ArrowLeft, CircleDot} from "lucide-react"
+import {ArrowLeft, CircleDot, Trash2} from "lucide-react"
 
 interface Ticket {
   id: string;
@@ -39,6 +39,9 @@ export function TicketDetails() {
   const { id } = useParams();
 
   const [ticket, setTicket] = useState<Ticket | null>(null);
+  const [showAdditionalServiceModal, setShowAdditionalServiceModal] = useState(false);
+  const [serviceDescription, setServiceDescription] = useState("");
+  const [serviceAmount, setServiceAmount] = useState("");
 
   const {user} = useAuth()
 
@@ -58,9 +61,9 @@ export function TicketDetails() {
   }
 
   useEffect(() => {
-    loadTicket();
-  }, []);
-
+       loadTicket();
+     }, []);
+  
   if (!ticket) {
     return (
       <AppLayout>
@@ -68,78 +71,80 @@ export function TicketDetails() {
       </AppLayout>
     );
   }
-
+  
   const additionalServicesTotal =
-    ticket.additionalServices.reduce(
-      (total, service) => total + service.amount,
-      0
-    );
-
+  ticket.additionalServices.reduce(
+    (total, service) => total + service.amount,
+    0
+  );
+  
   const totalValue =
-    ticket.service.amount +
-    additionalServicesTotal;
-
-    function getStatusBadge(status: string) {
-  switch (status) {
-    case "open":
-      return (
-        <span
+  ticket.service.amount +
+  additionalServicesTotal;
+  
+  
+  function getStatusBadge(status: string) {
+    switch (status) {
+      case "open":
+        return (
+          <span
           className="
-            flex items-center gap-2
-            bg-pink-100
-            text-pink-600
-            px-4 py-1
-            rounded-full
-            text-sm
+          flex items-center gap-2
+          bg-pink-100
+          text-pink-600
+          px-4 py-1
+          rounded-full
+          text-sm
           "
-        >
+          >
           <CircleDot size={14} />
           Aberto
         </span>
       );
-
-    case "in_progress":
-      return (
-        <span
+      
+      case "in_progress":
+        return (
+          <span
           className="
-            flex items-center gap-2
-            bg-blue-100
-            text-blue-600
-            px-4 py-1
-            rounded-full
-            text-sm
+          flex items-center gap-2
+          bg-blue-100
+          text-blue-600
+          px-4 py-1
+          rounded-full
+          text-sm
           "
-        >
+          >
           <CircleDot size={14} />
           Em atendimento
         </span>
       );
-
-    case "closed":
-      return (
-        <span
+      
+      case "closed":
+        return (
+          <span
           className="
-            flex items-center gap-2
-            bg-green-100
-            text-green-600
-            px-4 py-1
+          flex items-center gap-2
+          bg-green-100
+          text-green-600
+          px-4 py-1
             rounded-full
             text-sm
           "
-        >
+          >
           <CircleDot size={14} />
           Encerrado
         </span>
       );
+      
+      default:
+        return null;
+      }
+    }
 
-    default:
-      return null;
-  }
-}
-
+  
 async function startAttendance() {
   try {
-
+    
     await api.patch(
       `/tickets/${ticket?.id}/status`,
       {
@@ -171,7 +176,156 @@ async function closeTicket() {
   }
 }
 
+async function handleAddAdditionalService() {
+  try {
+
+    await api.post(
+      `/tickets/${ticket?.id}/additionalService`,
+      {
+        description: serviceDescription,
+        amount: Number(serviceAmount)
+      }
+    );
+
+    setShowAdditionalServiceModal(false);
+
+    setServiceDescription("");
+
+    setServiceAmount("");
+
+    loadTicket();
+
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+
   return (
+
+    <>
+    {showAdditionalServiceModal && (
+
+  <div
+    className="
+      fixed
+      inset-0
+      bg-black/40
+      flex
+      items-center
+      justify-center
+      z-50
+    "
+  >
+
+    <div
+      className="
+        bg-white
+        rounded-xl
+        w-full
+        max-w-md
+        p-6
+      "
+    >
+
+      <div className="flex justify-between items-center">
+
+        <h2 className="text-xl font-semibold">
+          Serviço adicional
+        </h2>
+
+        <button
+          onClick={() =>
+            setShowAdditionalServiceModal(false)
+          }
+        >
+          ✕
+        </button>
+
+      </div>
+
+      <div className="mt-6">
+
+        <label
+          className="
+            text-xs
+            text-zinc-500
+            uppercase
+          "
+        >
+          Descrição
+        </label>
+
+        <input
+          value={serviceDescription}
+          onChange={(e) =>
+            setServiceDescription(
+              e.target.value
+            )
+          }
+          className="
+            w-full
+            border-b
+            py-2
+            outline-none
+            mt-2
+          "
+        />
+
+      </div>
+
+      <div className="mt-6">
+
+        <label
+          className="
+            text-xs
+            text-zinc-500
+            uppercase
+          "
+        >
+          Valor
+        </label>
+
+        <input
+          type="number"
+          value={serviceAmount}
+          onChange={(e) =>
+            setServiceAmount(
+              e.target.value
+            )
+          }
+          className="
+            w-full
+            border-b
+            py-2
+            outline-none
+            mt-2
+          "
+        />
+
+      </div>
+
+      <button
+        onClick={handleAddAdditionalService}
+        className="
+          w-full
+          mt-8
+          bg-zinc-900
+          text-white
+          py-3
+          rounded
+          hover:bg-zinc-800
+        "
+      >
+        Salvar
+      </button>
+
+    </div>
+
+  </div>
+
+)}
+
   <AppLayout>
     <div className="space-y-6">
 
@@ -384,20 +538,23 @@ async function closeTicket() {
                 </p>
 
                 <button
-                  className="
-                    h-8
-                    w-8
-                    rounded
-                    bg-zinc-900
-                    text-white
-                    flex
-                    items-center
-                    justify-center
-                    hover:bg-zinc-800
-                  "
-                >
-                  +
-                </button>
+  onClick={() =>
+    setShowAdditionalServiceModal(true)
+  }
+  className="
+    h-8
+    w-8
+    rounded
+    bg-zinc-900
+    text-white
+    flex
+    items-center
+    justify-center
+    hover:bg-zinc-800
+  "
+>
+  +
+</button>
 
               </div>
 
@@ -519,8 +676,25 @@ async function closeTicket() {
                     }
                   )}
                 </span>
-
               </div>
+
+              <div className="flex justify-between mt-4">
+
+  <span>
+    Adicionais
+  </span>
+
+  <span>
+    {additionalServicesTotal.toLocaleString(
+      "pt-BR",
+      {
+        style: "currency",
+        currency: "BRL",
+      }
+    )}
+  </span>
+
+</div>
 
               <hr className="my-6" />
 
@@ -552,5 +726,7 @@ async function closeTicket() {
 
     </div>
   </AppLayout>
+
+  </>
 );
 }

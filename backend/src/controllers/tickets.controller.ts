@@ -377,6 +377,39 @@ class TicketsController {
   }
 
   return res.json(ticket);
+    }
+
+    async deleteAdditionalService(
+  req: Request,
+  res: Response
+) {
+  const paramsSchema = z.object({
+    id: z.string().uuid(),
+  });
+
+  const { id } = paramsSchema.parse(req.params);
+
+  const additionalService =
+    await prisma.additionalService.findUnique({
+      where: {
+        id,
+      },
+    });
+
+  if (!additionalService) {
+    throw new AppError(
+      "Serviço adicional não encontrado.",
+      404
+    );
+  }
+
+  await prisma.additionalService.delete({
+    where: {
+      id,
+    },
+  });
+
+  return res.status(204).send();
 }
 
 }
