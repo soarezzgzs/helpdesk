@@ -16,5 +16,6 @@ techniciansRoutes.post("/", verifyAuthorization(["admin"]) ,techniciansControlle
 techniciansRoutes.put("/:id", verifyAuthorization(["admin", "technician"]) ,techniciansController.update)
 techniciansRoutes.patch("/password/:id", verifyAuthorization(["admin", "technician"]) ,techniciansController.updatePassword)
 techniciansRoutes.patch("/availability/:id", verifyAuthorization(["admin", "technician"]) ,techniciansController.technicianAvailability)
+techniciansRoutes.get("/availability/:id", verifyAuthorization(["admin", "technician"]) ,techniciansController.showAvailability)
 
 export {techniciansRoutes}

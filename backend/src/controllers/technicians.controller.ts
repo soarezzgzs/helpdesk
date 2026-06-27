@@ -243,6 +243,30 @@ class TechniciansController {
         return res.status(200).json(availability)
     }
 
+    async showAvailability(
+  req: Request,
+  res: Response
+) {
+  const paramsSchema = z.object({
+    id: z.string().uuid(),
+  });
+
+  const { id } =
+    paramsSchema.parse(req.params);
+
+  const availability =
+    await prisma.technicianAvailability.findMany({
+      where: {
+        technicianId: id,
+      },
+      orderBy: {
+        hour: "asc",
+      },
+    });
+
+  return res.json(availability);
+}
+
 }
 
 export {TechniciansController}

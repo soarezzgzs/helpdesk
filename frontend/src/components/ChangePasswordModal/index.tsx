@@ -57,7 +57,7 @@ export function ChangePasswordModal({
         flex
         items-center
         justify-center
-        z-[60]
+        z-60
       "
     >
       <div

@@ -35,21 +35,53 @@ export function ProfileModal({
 
     const [showPasswordModal, setShowPasswordModal] = useState(false);
 
-    const {updateUser} = useAuth();
+    const [selectedHours, setSelectedHours] = useState<string[]>([]);
+
+    const {user, updateUser} = useAuth();
+
+    const availableHours = [
+  "09:00",
+  "10:00",
+  "11:00",
+  "12:00",
+  "13:00",
+  "14:00",
+  "15:00",
+  "16:00",
+  "17:00",
+];
 
   async function loadProfile() {
-    try {
-      const response =
-        await api.get("/profile");
+  try {
 
-      setProfile(response.data);
+    const response =
+      await api.get("/profile");
 
-      setName(response.data.name);
+    setProfile(response.data);
 
-    } catch (error) {
-      console.log(error);
+    setName(response.data.name);
+
+    if (
+      response.data.role ===
+      "technician"
+    ) {
+
+      const availabilityResponse =
+        await api.get(
+          `/technicians/availability/${response.data.id}`
+        );
+
+      setSelectedHours(
+        availabilityResponse.data.map(
+          (item: any) => item.hour
+        )
+      );
     }
+
+  } catch (error) {
+    console.log(error);
   }
+}
 
   async function handleSave() {
   try {
@@ -83,6 +115,18 @@ export function ProfileModal({
       }
     );
 
+    if (
+  user?.role === "technician"
+) {
+
+  await api.patch(
+    `/technicians/availability/${user.id}`,
+    {
+      hours: selectedHours,
+    }
+  );
+}
+
     const updatedProfile =
   await api.get("/profile");
 
@@ -97,6 +141,25 @@ onClose();
   } catch (error) {
     console.log(error);
   }
+}
+
+function toggleHour(hour: string) {
+
+  if (selectedHours.includes(hour)) {
+
+    setSelectedHours(
+      selectedHours.filter(
+        h => h !== hour
+      )
+    );
+
+    return;
+  }
+
+  setSelectedHours([
+    ...selectedHours,
+    hour,
+  ]);
 }
 
   useEffect(() => {
@@ -348,6 +411,68 @@ onClose();
 </button>
 
           </div>
+
+          {user?.role === "technician" && (
+
+  <div className="mt-10">
+
+    <div>
+
+      <p className="font-medium">
+        Disponibilidade
+      </p>
+
+      <p className="text-sm text-zinc-500 mt-1">
+        Horários de atendimento
+      </p>
+
+    </div>
+
+    <div className="flex flex-wrap gap-3 mt-4">
+
+      {availableHours.map(hour => (
+
+        <button
+          key={hour}
+          type="button"
+          onClick={() =>
+            toggleHour(hour)
+          }
+          className={`
+            px-4
+            py-2
+            rounded-full
+            border
+            transition
+
+            ${
+              selectedHours.includes(
+                hour
+              )
+                ? `
+                  bg-zinc-900
+                  text-white
+                  border-zinc-900
+                `
+                : `
+                  bg-white
+                  text-zinc-600
+                  border-zinc-300
+                  hover:border-zinc-500
+                `
+            }
+          `}
+        >
+          {hour}
+        </button>
+
+      ))}
+
+    </div>
+
+  </div>
+
+)}
 
         </div>
 
