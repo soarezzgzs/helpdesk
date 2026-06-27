@@ -27,12 +27,12 @@ export function AppRoutes() {
                 />
 
                 <Route
-                    path="/client"
+                    path="/tickets/my-tickets"
                     element={<Client />}
                 />
 
                 <Route
-                    path="/technician"
+                    path="/tickets/assigned"
                     element={<Technician />}
                 />
 

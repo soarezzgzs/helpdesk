@@ -1,17 +1,17 @@
 import logo from "../../assets/logo-helpdesk.png";
 
-import {Link} from "react-router-dom"
+import {NavLink} from "react-router-dom"
 
 import { useAuth } from "../../contexts/AuthContext";
 
 const clientMenu = [
   {
     label: "Meus chamados",
-    path: "/clients/my-tickets",
+    path: "/tickets/my-tickets",
   },
   {
     label: "Criar chamado",
-    path: "/clients",
+    path: "/tickets/create-ticket",
   },
 ];
 
@@ -25,19 +25,19 @@ const technicianMenu = [
 const adminMenu = [
   {
     label: "Chamados",
-    path: "/admin/tickets",
+    path: "/tickets/admin",
   },
   {
     label: "Clientes",
-    path: "/admin/clients",
+    path: "/clients/admin",
   },
   {
     label: "Técnicos",
-    path: "/admin/technicians",
+    path: "/technicians/admin",
   },
   {
     label: "Serviços",
-    path: "/admin/services",
+    path: "/services/admin",
   },
 ];
 
@@ -70,22 +70,23 @@ export function Sidebar() {
 
         <nav className="space-y-2">
         {menu.map((item) => (
-            <Link
+            <NavLink
             key={item.path}
             to={item.path}
-            className="
-            block
-            w-full
-            rounded
-            px-4
-            py-2
-            text-sm
-          hover:bg-blue-600
-            transition
-        "
+            className={({isActive}) => `
+              block
+              w-full
+              rounded
+              px-4
+              py-2
+              text-sm
+              ${isActive ? 'bg-blue-600' : 'hover:bg-blue-600'}
+              transition
+            `}
+
     >
       {item.label}
-    </Link>
+    </NavLink>
   ))}
 </nav>
 
@@ -107,4 +108,3 @@ export function Sidebar() {
     </aside>
   );
 }
-``

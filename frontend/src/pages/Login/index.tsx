@@ -38,15 +38,15 @@ export function Login() {
       const role = response.data.user.role
 
       if(role === "admin") {
-        navigate("/admin")
+        navigate("/tickets/admin")
       } 
       
       if (role === "technician") {
-        navigate("/technician")
+        navigate("/tickets/assigned")
       } 
       
       if(role === "client") {
-        navigate("/client")
+        navigate("/tickets/my-tickets")
       }
 
     } catch (error) {

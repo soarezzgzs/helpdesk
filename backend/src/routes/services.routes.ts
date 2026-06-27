@@ -8,7 +8,7 @@ const servicesRoutes = Router()
 
 const servicesController = new ServicesController()
 
-servicesRoutes.post("/", verifyAuthorization(["admin"]) ,servicesController.create)
+servicesRoutes.post("/admin", verifyAuthorization(["admin"]) ,servicesController.create)
 servicesRoutes.get("/", verifyAuthorization(["admin"]) ,servicesController.index)
 servicesRoutes.put("/:id", verifyAuthorization(["admin"]) ,servicesController.update)
 servicesRoutes.patch("/:id/status", verifyAuthorization(["admin"]) ,servicesController.updateStatus)
