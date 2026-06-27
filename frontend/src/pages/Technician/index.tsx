@@ -20,6 +20,7 @@ interface Ticket {
 
   client: {
     name: string;
+    avatarUrl: string | null;
   };
 
   service: {
@@ -219,23 +220,40 @@ export function Technician() {
 
           <div className="flex items-center gap-2">
 
-            <div
-              className="
-                h-6
-                w-6
-                rounded-full
-                bg-blue-600
-                text-white
-                text-xs
-                flex
-                items-center
-                justify-center
-              "
-            >
-              {ticket.client.name
-                .charAt(0)
-                .toUpperCase()}
-            </div>
+            {ticket.client.avatarUrl ? (
+
+  <img
+    src={`http://localhost:3333/uploads/${ticket.client.avatarUrl}`}
+    alt={ticket.client.name}
+    className="
+      h-6
+      w-6
+      rounded-full
+      object-cover
+    "
+  />
+
+) : (
+
+  <div
+    className="
+      h-6
+      w-6
+      rounded-full
+      bg-blue-600
+      text-white
+      text-xs
+      flex
+      items-center
+      justify-center
+    "
+  >
+    {ticket.client.name
+      .charAt(0)
+      .toUpperCase()}
+  </div>
+
+)}
 
             <span className="text-sm">
               {ticket.client.name}

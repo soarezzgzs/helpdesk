@@ -17,6 +17,7 @@ interface Ticket {
 
   technician: {
     name: string;
+    avatarUrl: string | null;
   };
 
   service: {
@@ -26,6 +27,7 @@ interface Ticket {
 
   client: {
     name: string;
+    avatarUrl: string | null;
   }
 
   additionalServices: {
@@ -509,23 +511,40 @@ async function handleAddAdditionalService() {
 
               <div className="flex items-center gap-2 mt-2">
 
-                <div
-                  className="
-                    h-6
-                    w-6
-                    rounded-full
-                    bg-blue-600
-                    text-white
-                    text-xs
-                    flex
-                    items-center
-                    justify-center
-                  "
-                >
-                  {ticket.client.name
-                    .charAt(0)
-                    .toUpperCase()}
-                </div>
+                {ticket.client.avatarUrl ? (
+
+  <img
+    src={`http://localhost:3333/uploads/${ticket.client.avatarUrl}`}
+    alt={ticket.client.name}
+    className="
+      h-6
+      w-6
+      rounded-full
+      object-cover
+    "
+  />
+
+) : (
+
+  <div
+    className="
+      h-6
+      w-6
+      rounded-full
+      bg-blue-600
+      text-white
+      text-xs
+      flex
+      items-center
+      justify-center
+    "
+  >
+    {ticket.client.name
+      .charAt(0)
+      .toUpperCase()}
+  </div>
+
+)}
 
                 <span>
                   {ticket.client.name}
@@ -664,26 +683,43 @@ async function handleAddAdditionalService() {
 
             <div className="flex items-center gap-3">
 
-              <div
-                className="
-                  h-10
-                  w-10
-                  rounded-full
-                  bg-blue-600
-                  text-white
-                  flex
-                  items-center
-                  justify-center
-                  font-semibold
-                "
-              >
-                {ticket.technician.name
-                  .split(" ")
-                  .map(word => word[0])
-                  .slice(0, 2)
-                  .join("")
-                  .toUpperCase()}
-              </div>
+              {ticket.technician.avatarUrl ? (
+
+  <img
+    src={`http://localhost:3333/uploads/${ticket.technician.avatarUrl}`}
+    alt={ticket.technician.name}
+    className="
+      h-10
+      w-10
+      rounded-full
+      object-cover
+    "
+  />
+
+) : (
+
+  <div
+    className="
+      h-10
+      w-10
+      rounded-full
+      bg-blue-600
+      text-white
+      flex
+      items-center
+      justify-center
+      font-semibold
+    "
+  >
+    {ticket.technician.name
+      .split(" ")
+      .map(word => word[0])
+      .slice(0, 2)
+      .join("")
+      .toUpperCase()}
+  </div>
+
+)}
 
               <div>
 

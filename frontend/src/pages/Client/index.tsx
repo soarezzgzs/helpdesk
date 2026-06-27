@@ -12,6 +12,7 @@ interface Ticket {
 
   technician: {
     name: string;
+    avatarUrl: string | null;
   };
 
   service: {
@@ -116,12 +117,6 @@ export function Client() {
             <tbody>
               {tickets.map((ticket) => {
 
-                const initials = ticket.technician.name
-                  .split(" ")
-                  .map(word => word[0])
-                  .slice(0, 2)
-                  .join("")
-                  .toUpperCase();
 
                 return (
                   <tr
@@ -155,21 +150,40 @@ export function Client() {
                     <td>
                       <div className="flex items-center gap-2">
 
-                        <div
-                          className="
-                            h-6
-                            w-6
-                            rounded-full
-                            bg-blue-600
-                            text-white
-                            text-xs
-                            flex
-                            items-center
-                            justify-center
-                          "
-                        >
-                          {initials}
-                        </div>
+                        {ticket.technician.avatarUrl ? (
+
+  <img
+    src={`http://localhost:3333/uploads/${ticket.technician.avatarUrl}`}
+    alt={ticket.technician.name}
+    className="
+      h-6
+      w-6
+      rounded-full
+      object-cover
+    "
+  />
+
+) : (
+
+  <div
+    className="
+      h-6
+      w-6
+      rounded-full
+      bg-blue-600
+      text-white
+      text-xs
+      flex
+      items-center
+      justify-center
+    "
+  >
+    {ticket.technician.name
+      .charAt(0)
+      .toUpperCase()}
+  </div>
+
+)}
 
                         <span>
                           {ticket.technician.name}
