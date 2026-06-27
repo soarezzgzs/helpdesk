@@ -29,10 +29,11 @@ export function AuthProvider({
     const [user, setUser] = useState<User | null>(null);
     const [token, setToken] = useState<string | null>(null);
 
+    
     useEffect(() => {
         const storedToken = localStorage.getItem('@helpdesk:token');
         const storedUser = localStorage.getItem('@helpdesk:user');
-
+        
         if(storedToken && storedUser) {
             setToken(storedToken);
             setUser(JSON.parse(storedUser));
@@ -45,17 +46,19 @@ export function AuthProvider({
     ) {
         localStorage.setItem('@helpdesk:token', token);
         localStorage.setItem('@helpdesk:user', JSON.stringify(user));
-
+        
         setToken(token);
         setUser(user);
     }
-
+    
     function signOut() {
         localStorage.removeItem('@helpdesk:token');
         localStorage.removeItem('@helpdesk:user');
 
+        
         setToken(null);
         setUser(null);
+
     }
     
     return(
