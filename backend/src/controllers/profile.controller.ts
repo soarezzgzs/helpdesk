@@ -5,7 +5,9 @@ import {z} from "zod";
 
 class ProfileController {
     async updateAvatar(req: Request, res: Response) {
+
         const userId = req.user?.id;
+
 
         if(!userId) {
             throw new AppError("Usuário nao encontrado.", 404)
@@ -13,9 +15,14 @@ class ProfileController {
 
         const avatarUrl = req.file?.filename
 
+
+
         if(!avatarUrl) {
             throw new AppError("Imagem nao encontrada.", 404)
         }
+
+        console.log(req.file)
+
 
         const user = await prisma.user.findUnique({
             where: {
@@ -35,6 +42,8 @@ class ProfileController {
                 avatarUrl
             }
         })
+
+        console.log(req.file)
 
         const {password, ...userWithoutPassword} = updatedUser
 

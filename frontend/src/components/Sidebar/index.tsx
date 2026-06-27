@@ -9,6 +9,8 @@ import { useAuth } from "../../contexts/AuthContext";
 
 import {LogOut, UserCircle2} from "lucide-react"
 
+import {ProfileModal} from "../ProfileModal";
+
 const clientMenu = [
   {
     label: "Meus chamados",
@@ -139,26 +141,45 @@ export function Sidebar() {
     gap-3
   "
 >
-<div
-  className="
-    h-10
-    w-10
-    rounded-full
-    bg-blue-700
-    flex
-    items-center
-    justify-center
-    text-sm
-    font-semibold
-  "
->
-  {user?.name
-    ?.split(" ")
-    .map(word => word[0])
-    .slice(0, 2)
-    .join("")
-    .toUpperCase()}
-</div>
+{user?.avatarUrl ? (
+
+  <img
+    src={`http://localhost:3333/uploads/${user.avatarUrl}`}
+    alt={user.name}
+    className="
+      h-10
+      w-10
+      rounded-full
+      object-cover
+      border
+      border-zinc-700
+    "
+  />
+
+) : (
+
+  <div
+    className="
+      h-10
+      w-10
+      rounded-full
+      bg-blue-700
+      flex
+      items-center
+      justify-center
+      text-sm
+      font-semibold
+    "
+  >
+    {user?.name
+      ?.split(" ")
+      .map(word => word[0])
+      .slice(0, 2)
+      .join("")
+      .toUpperCase()}
+  </div>
+
+)}
 
 <div>
 
@@ -247,48 +268,10 @@ export function Sidebar() {
 )}
 </div>
       </aside>
-
-      {showProfileModal && (
-        <div
-          className="
-            fixed
-            inset-0
-            bg-black/40
-            flex
-            items-center
-            justify-center
-            z-50
-          "
-        >
-          <div
-            className="
-              bg-white
-              rounded-xl
-              p-6
-              w-full
-              max-w-lg
-            "
-          >
-            <div className="flex justify-between items-center">
-              <h2 className="text-xl font-semibold">
-                Perfil
-              </h2>
-
-              <button
-                onClick={() =>
-                  setShowProfileModal(false)
-                }
-              >
-                ✕
-              </button>
-            </div>
-
-            <p className="mt-6 text-zinc-500">
-              Modal de perfil em construção.
-            </p>
-          </div>
-        </div>
-      )}
+            <ProfileModal
+              isOpen={showProfileModal}
+              onClose={() => setShowProfileModal(false)}
+            />
     </>
   );
 }

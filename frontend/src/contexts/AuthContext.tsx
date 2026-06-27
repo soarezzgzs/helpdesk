@@ -14,6 +14,7 @@ interface AuthContextData {
     token: string | null;
     signIn: (token: string, user: User) => void;
     signOut: () => void;
+    updateUser: (user: User) => void;
     isAuthenticated: boolean;
 }
 
@@ -60,9 +61,19 @@ export function AuthProvider({
         setUser(null);
 
     }
+
+    function updateUser(userData: User) {
+
+    localStorage.setItem(
+        '@helpdesk:user',
+        JSON.stringify(userData)
+    );
+
+    setUser(userData);
+}
     
     return(
-        <AuthContext.Provider value={{user, token, signIn, signOut, isAuthenticated: !!token}}>
+        <AuthContext.Provider value={{user, token, signIn, signOut, updateUser, isAuthenticated: !!token}}>
             {children}
         </AuthContext.Provider>
     )
