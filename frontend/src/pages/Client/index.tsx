@@ -1,100 +1,208 @@
 import { AppLayout } from "../../layouts/AppLayout";
+import { useEffect, useState } from "react";
+import { api } from "../../services/api";
+import { Eye } from "lucide-react";
+
+interface Ticket {
+  id: string;
+  title: string;
+  status: string;
+  createdAt: string;
+
+  technician: {
+    name: string;
+  };
+
+  service: {
+    name: string;
+    amount: number;
+  };
+}
 
 export function Client() {
-    const tickets = [
-  {
-    id: "00001",
-    title: "Rede lenta",
-    service: "Instalação de Rede",
-    value: "R$ 180,00",
-    technician: "Carlos Silva",
-    status: "Aberto",
-  },
+  const [tickets, setTickets] = useState<Ticket[]>([]);
 
-  {
-    id: "00002",
-    title: "Computador não liga",
-    service: "Hardware",
-    value: "R$ 150,00",
-    technician: "Ana Oliveira",
-    status: "Encerrado",
-  },
-];
+  async function loadTickets() {
+    try {
+      const response = await api.get("/tickets/my-tickets");
+
+      setTickets(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    loadTickets();
+  }, []);
+
+  function getStatusBadge(status: string) {
+    switch (status) {
+      case "open":
+        return (
+          <span className="bg-pink-100 text-pink-600 px-3 py-1 rounded-full text-xs font-medium">
+            Aberto
+          </span>
+        );
+
+      case "in_progress":
+        return (
+          <span className="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-xs font-medium">
+            Em atendimento
+          </span>
+        );
+
+      case "closed":
+        return (
+          <span className="bg-green-100 text-green-600 px-3 py-1 rounded-full text-xs font-medium">
+            Encerrado
+          </span>
+        );
+
+      default:
+        return status;
+    }
+  }
 
   return (
     <AppLayout>
-      <div className="bg-white rounded-xl p-8">
+      <div className="bg-white rounded-xl border border-zinc-200 p-8">
 
-        <h1 className="text-2xl font-semibold text-blue-700">
+        <h1 className="text-3xl font-semibold text-[#3347B0]">
           Meus chamados
         </h1>
 
         <div className="mt-8 overflow-x-auto">
 
-  <table className="w-full">
+          <table className="w-full">
 
-    <thead>
+            <thead>
+              <tr className="text-left text-sm text-zinc-500 border-b">
 
-      <tr className="text-left border-b">
+                <th className="pb-4 font-medium">
+                  Atualizado em
+                </th>
 
-        <th className="pb-4">ID</th>
+                <th className="pb-4 font-medium">
+                  Id
+                </th>
 
-        <th className="pb-4">Título</th>
+                <th className="pb-4 font-medium">
+                  Título
+                </th>
 
-        <th className="pb-4">Serviço</th>
+                <th className="pb-4 font-medium">
+                  Serviço
+                </th>
 
-        <th className="pb-4">Valor</th>
+                <th className="pb-4 font-medium">
+                  Valor total
+                </th>
 
-        <th className="pb-4">Técnico</th>
+                <th className="pb-4 font-medium">
+                  Técnico
+                </th>
 
-        <th className="pb-4">Status</th>
+                <th className="pb-4 font-medium">
+                  Status
+                </th>
 
-      </tr>
+                <th className="pb-4"></th>
 
-    </thead>
+              </tr>
+            </thead>
 
-    <tbody>
+            <tbody>
+              {tickets.map((ticket) => {
 
-      {tickets.map((ticket) => (
+                const initials = ticket.technician.name
+                  .split(" ")
+                  .map(word => word[0])
+                  .slice(0, 2)
+                  .join("")
+                  .toUpperCase();
 
-        <tr
-          key={ticket.id}
-          className="border-b"
-        >
+                return (
+                  <tr
+                    key={ticket.id}
+                    className="border-b border-zinc-200"
+                  >
+                    <td className="py-5 text-sm text-zinc-600">
+                      {new Date(ticket.createdAt)
+                        .toLocaleDateString("pt-BR")}
+                    </td>
 
-          <td className="py-4">
-            {ticket.id}
-          </td>
+                    <td className="text-sm font-medium">
+                      {ticket.id.slice(0, 5)}
+                    </td>
 
-          <td>
-            {ticket.title}
-          </td>
+                    <td className="font-medium">
+                      {ticket.title}
+                    </td>
 
-          <td>
-            {ticket.service}
-          </td>
+                    <td>
+                      {ticket.service.name}
+                    </td>
 
-          <td>
-            {ticket.value}
-          </td>
+                    <td>
+                      {ticket.service.amount.toLocaleString("pt-BR", {
+                        style: "currency",
+                        currency: "BRL"
+                      })}
+                    </td>
 
-          <td>
-            {ticket.technician}
-          </td>
+                    <td>
+                      <div className="flex items-center gap-2">
 
-          <td>
-            {ticket.status}
-          </td>
+                        <div
+                          className="
+                            h-6
+                            w-6
+                            rounded-full
+                            bg-blue-600
+                            text-white
+                            text-xs
+                            flex
+                            items-center
+                            justify-center
+                          "
+                        >
+                          {initials}
+                        </div>
 
-        </tr>
+                        <span>
+                          {ticket.technician.name}
+                        </span>
 
-      ))}
+                      </div>
+                    </td>
 
-    </tbody>
+                    <td>
+                      {getStatusBadge(ticket.status)}
+                    </td>
 
-  </table>
+                    <td>
+                      <button
+                        className="
+                          p-2
+                          rounded-lg
+                          bg-zinc-100
+                          hover:bg-zinc-200
+                          transition
+                        "
+                      >
+                        <Eye size={16} />
+                      </button>
+                    </td>
 
-</div>
+                  </tr>
+                );
+              })}
+            </tbody>
+
+          </table>
+
+        </div>
 
       </div>
     </AppLayout>
