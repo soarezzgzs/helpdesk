@@ -1,9 +1,59 @@
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+import {api} from "../../services/api"
+
+import {z} from "zod"
+import {useForm} from "react-hook-form"
+import {zodResolver} from "@hookform/resolvers/zod"
+
+import {useAuth} from "../../contexts/AuthContext"
 
 import logo from "../../assets/logo-helpdesk.png"
 import bgLogin from "../../assets/bg-login.png"
 
+
 export function Login() {
+
+  const navigate = useNavigate()
+
+  const {signIn} = useAuth()
+
+  const loginSchema = z.object({
+    email: z.string().email({message: "E-mail inválido."}).toLowerCase(),
+    password: z.string().min(1, {message: "Informe a senha."})
+  })
+  
+  type LoginSchema = z.infer<typeof loginSchema>
+  
+  const {register, handleSubmit, formState: {errors}} = useForm<LoginSchema>({resolver: zodResolver(loginSchema)})
+
+  async function handleLogin(data: LoginSchema) {
+    try {
+      const response = await api.post("/login", {
+        email: data.email,
+        password: data.password
+      })
+
+      signIn(response.data.token, response.data.user)
+
+      const role = response.data.user.role
+
+      if(role === "admin") {
+        navigate("/admin")
+      } 
+      
+      if (role === "technician") {
+        navigate("/technician")
+      } 
+      
+      if(role === "client") {
+        navigate("/client")
+      }
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <main className="relative min-h-screen overflow-hidden">
 
@@ -57,7 +107,7 @@ export function Login() {
                 Entre usando seu e-mail e senha cadastrados
               </p>
 
-              <form className="mt-8 space-y-6">
+              <form onSubmit={handleSubmit(handleLogin)} className="mt-8 space-y-6">
 
                 <div>
                   <label className="block text-xs uppercase text-zinc-500 mb-2">
@@ -67,6 +117,7 @@ export function Login() {
                   <input
                     type="email"
                     placeholder="exemplo@mail.com"
+                    {...register("email")}
                     className="
                       w-full
                       border-b
@@ -76,7 +127,9 @@ export function Login() {
                       outline-none
                     "
                   />
+                {errors.email && <span className="text-xs text-red-500">{errors.email.message}</span>}
                 </div>
+
 
                 <div>
                   <label className="block text-xs uppercase text-zinc-500 mb-2">
@@ -86,6 +139,7 @@ export function Login() {
                   <input
                     type="password"
                     placeholder="Digite sua senha"
+                    {...register("password")}
                     className="
                       w-full
                       border-b
@@ -95,7 +149,9 @@ export function Login() {
                       outline-none
                     "
                   />
+                {errors.password && <span className="text-xs text-red-500">{errors.password.message}</span>}
                 </div>
+
 
                 <button
                   type="submit"
