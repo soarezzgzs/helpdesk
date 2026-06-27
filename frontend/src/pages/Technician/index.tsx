@@ -1,7 +1,13 @@
-export function Technician(){
-    return (
-        <div>
-            <h1>Technician</h1>
-        </div>
-    )
+import { AppLayout } from "../../layouts/AppLayout";
+
+export function Technician() {
+  return (
+    <AppLayout>
+
+      <h1 className="text-3xl font-bold">
+        Dashboard Technician
+      </h1>
+
+    </AppLayout>
+  );
 }
