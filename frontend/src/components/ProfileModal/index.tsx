@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { api } from "../../services/api";
 import {useAuth} from "../../contexts/AuthContext"
+import { ChangePasswordModal } from "../ChangePasswordModal";
 
 interface ProfileModalProps {
   isOpen: boolean;
@@ -31,6 +32,8 @@ export function ProfileModal({
 
   const fileInputRef =
     useRef<HTMLInputElement>(null);
+
+    const [showPasswordModal, setShowPasswordModal] = useState(false);
 
     const {updateUser} = useAuth();
 
@@ -330,16 +333,19 @@ onClose();
             />
 
             <button
-              className="
-                px-4
-                py-3
-                rounded-lg
-                border
-                border-zinc-300
-              "
-            >
-              Alterar
-            </button>
+  onClick={() =>
+    setShowPasswordModal(true)
+  }
+  className="
+    px-4
+    py-3
+    rounded-lg
+    border
+    border-zinc-300
+  "
+>
+  Alterar
+</button>
 
           </div>
 
@@ -361,6 +367,13 @@ onClose();
         </button>
 
       </div>
+
+      <ChangePasswordModal
+  isOpen={showPasswordModal}
+  onClose={() =>
+    setShowPasswordModal(false)
+  }
+/>
 
     </div>
   );
