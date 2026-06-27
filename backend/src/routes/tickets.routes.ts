@@ -12,6 +12,7 @@ ticketsRoutes.get("/my-tickets", verifyAuthorization(["client"]) ,ticketsControl
 ticketsRoutes.post("/create-ticket", verifyAuthorization(["client"]) ,ticketsController.create)
 ticketsRoutes.get("/assigned", verifyAuthorization(["technician"]) ,ticketsController.technicianTickets)
 ticketsRoutes.get("/admin", verifyAuthorization(["admin"]) ,ticketsController.allTickets)
+ticketsRoutes.get("/:id", verifyAuthorization(["client", "technician", "admin"]) ,ticketsController.show)
 ticketsRoutes.patch("/:id/status", verifyAuthorization(["admin", "technician"]) ,ticketsController.updateStatus)
 ticketsRoutes.post("/:id/additionalService", verifyAuthorization(["admin", "technician"]) ,ticketsController.addAdditionalService)
 

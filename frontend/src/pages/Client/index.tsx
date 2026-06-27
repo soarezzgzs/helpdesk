@@ -2,6 +2,7 @@ import { AppLayout } from "../../layouts/AppLayout";
 import { useEffect, useState } from "react";
 import { api } from "../../services/api";
 import { Eye } from "lucide-react";
+import { Link } from "react-router-dom";
 
 interface Ticket {
   id: string;
@@ -182,7 +183,8 @@ export function Client() {
                     </td>
 
                     <td>
-                      <button
+                      <Link
+                      to={`/ticket/${ticket.id}`}
                         className="
                           p-2
                           rounded-lg
@@ -192,7 +194,7 @@ export function Client() {
                         "
                       >
                         <Eye size={16} />
-                      </button>
+                      </Link>
                     </td>
 
                   </tr>

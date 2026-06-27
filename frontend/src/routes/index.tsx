@@ -5,6 +5,7 @@ import { Admin } from "../pages/Admin";
 import { Client } from "../pages/Client";
 import { Technician } from "../pages/Technician";
 import { Register } from "../pages/Register";
+import {TicketDetails} from "../pages/TicketDetails";
 
 export function AppRoutes() {
     return (
@@ -29,6 +30,11 @@ export function AppRoutes() {
                 <Route
                     path="/tickets/my-tickets"
                     element={<Client />}
+                />
+
+                <Route
+                    path="/ticket/:id"
+                    element={<TicketDetails />}
                 />
 
                 <Route

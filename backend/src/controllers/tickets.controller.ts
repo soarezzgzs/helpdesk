@@ -333,6 +333,52 @@ class TicketsController {
         return res.status(201).json(additionalService)
     }
 
+    async show(req: Request, res: Response) {
+
+  const paramsSchema = z.object({
+    id: z.string().uuid()
+  });
+
+  const { id } = paramsSchema.parse(req.params);
+
+  const ticket = await prisma.ticket.findUnique({
+    where: {
+      id
+    },
+
+    include: {
+      client: {
+        select: {
+          id: true,
+          name: true,
+          avatarUrl: true
+        }
+      },
+
+      technician: {
+        select: {
+          id: true,
+          name: true,
+          avatarUrl: true
+        }
+      },
+
+      service: true,
+
+      additionalServices: true
+    }
+  });
+
+  if (!ticket) {
+    throw new AppError(
+      "Ticket não encontrado.",
+      404
+    );
+  }
+
+  return res.json(ticket);
+}
+
 }
 
 export {TicketsController}
