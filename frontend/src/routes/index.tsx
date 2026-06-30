@@ -10,6 +10,8 @@ import {CreateTicket} from "../pages/CreateTicket";
 import {AdminTechnicians} from "../pages/Admin/Technicians";
 import {TechnicianForm} from "../pages/Admin/Technicians/Form";
 import{AdminClients} from "../pages/Admin/Clients";
+import {AdminServices} from "../pages/Admin/Services";
+
 export function AppRoutes() {
     return (
         <BrowserRouter>
@@ -68,6 +70,11 @@ export function AppRoutes() {
                 <Route
                     path="/clients/admin"
                     element={<AdminClients />}
+                />
+
+                <Route
+                    path="/services/admin"
+                    element={<AdminServices />}
                 />
 
             </Routes>

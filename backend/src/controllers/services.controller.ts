@@ -37,8 +37,8 @@ class ServicesController {
 
     async index(req: Request, res: Response){
         const services = await prisma.service.findMany({
-            where: {
-                active: true
+            orderBy: {
+                name: "asc"
             }
         })
 
@@ -121,6 +121,30 @@ class ServicesController {
 
         return res.json(updatedService)
     }
+
+    async show(req: Request, res: Response) {
+
+  const paramsSchema = z.object({
+    id: z.string().uuid()
+  })
+
+  const { id } =
+    paramsSchema.parse(req.params)
+
+  const service =
+    await prisma.service.findUnique({
+      where: { id }
+    })
+
+  if (!service) {
+    throw new AppError(
+      "Serviço não encontrado.",
+      404
+    )
+  }
+
+  return res.json(service)
+}
 
 }
 
