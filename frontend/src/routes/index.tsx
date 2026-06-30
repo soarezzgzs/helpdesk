@@ -9,7 +9,7 @@ import {TicketDetails} from "../pages/TicketDetails";
 import {CreateTicket} from "../pages/CreateTicket";
 import {AdminTechnicians} from "../pages/Admin/Technicians";
 import {TechnicianForm} from "../pages/Admin/Technicians/Form";
-
+import{AdminClients} from "../pages/Admin/Clients";
 export function AppRoutes() {
     return (
         <BrowserRouter>
@@ -63,6 +63,11 @@ export function AppRoutes() {
                 <Route
                     path="/technicians/admin/edit/:id"
                     element={<TechnicianForm />}
+                />
+
+                <Route
+                    path="/clients/admin"
+                    element={<AdminClients />}
                 />
 
             </Routes>

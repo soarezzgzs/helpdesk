@@ -27,7 +27,8 @@ class ClientsController {
                 id: client.id,
                 name: client.name,
                 email: client.email,
-                role: client.role
+                role: client.role,
+                avatarUrl: client.avatarUrl
             }
         })
 
@@ -182,6 +183,49 @@ class ClientsController {
 
         return res.status(200).json({message: "Cliente excluido com sucesso."})
     }
+
+    async show(
+  req: Request,
+  res: Response
+) {
+
+  const paramsSchema = z.object({
+    id: z.string().uuid(),
+  });
+
+  const { id } =
+    paramsSchema.parse(req.params);
+
+  const client =
+    await prisma.user.findUnique({
+      where: {
+        id,
+      },
+    });
+
+  if (!client) {
+    throw new AppError(
+      "Cliente não encontrado.",
+      404
+    );
+  }
+
+  if (
+    client.role !== UserRole.client
+  ) {
+    throw new AppError(
+      "Usuário não é um cliente.",
+      400
+    );
+  }
+
+  return res.json({
+    id: client.id,
+    name: client.name,
+    email: client.email,
+    avatarUrl: client.avatarUrl,
+  });
+}
 
 }
 
