@@ -49,7 +49,11 @@ export function TicketDetails() {
 
   const isTechnician = user?.role === "technician";
 
+  const isAdministrator = user?.role === "admin";
+
   const isClient = user?.role === "client";
+
+  const backRoute = user?.role === "admin" ? "/tickets/admin" : user?.role === "technician" ? "/tickets/assigned" : "/tickets/my-tickets"
 
   async function loadTicket() {
     try {
@@ -75,7 +79,7 @@ export function TicketDetails() {
   }
   
   const additionalServicesTotal =
-  ticket.additionalServices.reduce(
+   ticket.additionalServices.reduce(
     (total, service) => total + service.amount,
     0
   );
@@ -355,11 +359,7 @@ async function handleAddAdditionalService() {
         <div>
 
           <Link
-            to={
-              isTechnician
-                ? "/tickets/assigned"
-                : "/tickets/my-tickets"
-            }
+            to={backRoute}
             className="
               inline-flex
               items-center
@@ -380,7 +380,7 @@ async function handleAddAdditionalService() {
 
         </div>
 
-        {isTechnician && (
+        {(isTechnician || isAdministrator) && (
 
           <div className="flex gap-3">
 

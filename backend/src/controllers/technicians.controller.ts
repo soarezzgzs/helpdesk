@@ -5,26 +5,57 @@ import {AppError} from "../utils/AppError";
 import {UserRole} from "@prisma/client";
 import {hash, compare} from "bcrypt";
 
+interface Technician {
+    id: string
+    name: string
+    email: string
+    avatarUrl: string | null
+
+    availability: {
+        hour: string
+    }[]
+}
+
 class TechniciansController {
-    async index(req: Request, res: Response) {
-        const technicians = await prisma.user.findMany({
-            where: {
-                role: "technician"
-            }
-        })
+    async index(
+  req: Request,
+  res: Response
+) {
 
-        const techniciansWithoutPassword = technicians.map(technician => {
-            return {
-                id: technician.id,
-                name: technician.name,
-                email: technician.email,
-                role: technician.role
-            }
-        })
+  const technicians =
+    await prisma.user.findMany({
+      where: {
+        role: UserRole.technician,
+      },
 
-        return res.json(techniciansWithoutPassword)
+      include: {
+        availabilities: {
+          orderBy: {
+            hour: "asc",
+          },
+        },
+      },
+    });
 
-    }
+  const formattedTechnicians =
+    technicians.map(
+      technician => ({
+        id: technician.id,
+        name: technician.name,
+        email: technician.email,
+        role: technician.role,
+        avatarUrl:
+          technician.avatarUrl,
+
+        availability:
+          technician.availabilities,
+      })
+    );
+
+  return res.json(
+    formattedTechnicians
+  );
+}
 
     async create(req: Request, res: Response){
         const bodySchema = z.object({
@@ -74,7 +105,7 @@ class TechniciansController {
             }))
         })
 
-        return res.status(201).json({message: "Tecnico cadastrado com sucesso."})
+        return res.status(201).json({id: technician.id, name: technician.name, email: technician.email})
 
     }
 
@@ -265,6 +296,40 @@ class TechniciansController {
     });
 
   return res.json(availability);
+}
+
+    async show(
+  req: Request,
+  res: Response
+) {
+  const paramsSchema = z.object({
+    id: z.string().uuid(),
+  });
+
+  const { id } =
+    paramsSchema.parse(req.params);
+
+  const technician =
+    await prisma.user.findUnique({
+      where: {
+        id,
+      },
+    });
+
+  if (!technician) {
+    throw new AppError(
+      "Técnico não encontrado.",
+      404
+    );
+  }
+
+  return res.json({
+    id: technician.id,
+    name: technician.name,
+    email: technician.email,
+    avatarUrl: technician.avatarUrl,
+    role: technician.role,
+  });
 }
 
 }

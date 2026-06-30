@@ -7,6 +7,8 @@ import { Technician } from "../pages/Technician";
 import { Register } from "../pages/Register";
 import {TicketDetails} from "../pages/TicketDetails";
 import {CreateTicket} from "../pages/CreateTicket";
+import {AdminTechnicians} from "../pages/Admin/Technicians";
+import {TechnicianForm} from "../pages/Admin/Technicians/Form";
 
 export function AppRoutes() {
     return (
@@ -24,7 +26,7 @@ export function AppRoutes() {
                 />
 
                 <Route
-                    path="/admin"
+                    path="/tickets/admin"
                     element={<Admin />}
                 />
 
@@ -46,6 +48,21 @@ export function AppRoutes() {
                 <Route
                     path="/tickets/assigned"
                     element={<Technician />}
+                />
+
+                <Route
+                    path="/technicians/admin"
+                    element={<AdminTechnicians />}
+                />
+
+                <Route
+                    path="/technicians/admin/new"
+                    element={<TechnicianForm />}
+                />
+
+                <Route
+                    path="/technicians/admin/edit/:id"
+                    element={<TechnicianForm />}
                 />
 
             </Routes>

@@ -12,8 +12,9 @@ const techniciansController = new TechniciansController()
 
 
 techniciansRoutes.get("/admin", verifyAuthorization(["admin"]) ,techniciansController.index)
-techniciansRoutes.post("/", verifyAuthorization(["admin"]) ,techniciansController.create)
-techniciansRoutes.put("/:id", verifyAuthorization(["admin", "technician"]) ,techniciansController.update)
+techniciansRoutes.get("/admin/:id", verifyAuthorization(["admin"]) ,techniciansController.show)
+techniciansRoutes.post("/admin/new", verifyAuthorization(["admin"]) ,techniciansController.create)
+techniciansRoutes.put("/admin/edit/:id", verifyAuthorization(["admin", "technician"]) ,techniciansController.update)
 techniciansRoutes.patch("/password/:id", verifyAuthorization(["admin", "technician"]) ,techniciansController.updatePassword)
 techniciansRoutes.patch("/availability/:id", verifyAuthorization(["admin", "technician"]) ,techniciansController.technicianAvailability)
 techniciansRoutes.get("/availability/:id", verifyAuthorization(["admin", "technician"]) ,techniciansController.showAvailability)
