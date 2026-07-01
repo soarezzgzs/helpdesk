@@ -80,12 +80,14 @@ export function Sidebar() {
         className="
           relative
           w-64
+          h-screen
+          shrink-0
           bg-[#11131A]
           text-white
           flex
           flex-col
           justify-between
-          p-6
+          p-4
         "
       >
         <div>

@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { api } from "../../services/api";
 import {useAuth} from "../../contexts/AuthContext"
 import { ChangePasswordModal } from "../ChangePasswordModal";
+import {Trash2, Upload} from "lucide-react";
 
 interface ProfileModalProps {
   isOpen: boolean;
@@ -143,6 +144,26 @@ onClose();
   }
 }
 
+  async function handleDeleteAvatar() {
+
+  try {
+
+    await api.delete(
+      "/profile/avatar"
+    );
+
+    const updatedProfile =
+      await api.get("/profile");
+
+    setProfile(updatedProfile.data);
+
+    updateUser(updatedProfile.data);
+
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 function toggleHour(hour: string) {
 
   if (selectedHours.includes(hour)) {
@@ -272,7 +293,7 @@ function toggleHour(hour: string) {
 
   )}
 
-  <div>
+  <div className="flex items-center gap-4">
 
     <button
       type="button"
@@ -280,15 +301,33 @@ function toggleHour(hour: string) {
         fileInputRef.current?.click()
       }
       className="
-        bg-zinc-900
-        text-white
+        bg-zinc-200
+        text-black
         px-4
         py-2
         rounded-lg
       "
     >
+      <Upload size={16} className="inline-block mr-2" />
       Nova imagem
     </button>
+
+    <button
+  type="button"
+  onClick={handleDeleteAvatar}
+  className="
+    h-10
+    w-10
+    rounded-lg
+    bg-red-50
+    text-red-600
+    flex
+    items-center
+    justify-center
+  "
+>
+  <Trash2 size={18} />
+</button>
 
     <input
       type="file"

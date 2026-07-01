@@ -59,6 +59,8 @@ export function CreateServiceModal({
             justify-between
             p-6
             border-b
+          border-zinc-200
+
           "
         >
 
@@ -80,12 +82,15 @@ export function CreateServiceModal({
 
           <input
             value={name}
+            placeholder="Nome do serviço"
             onChange={(e) =>
               setName(e.target.value)
             }
             className="
               w-full
               border-b
+                border-zinc-200
+
               py-3
             "
           />
@@ -98,6 +103,7 @@ export function CreateServiceModal({
 
             <input
               type="number"
+              placeholder="R$ 0,00"
               value={amount}
               onChange={(e) =>
                 setAmount(e.target.value)
@@ -105,6 +111,7 @@ export function CreateServiceModal({
               className="
                 w-full
                 border-b
+                border-zinc-200
                 py-3
               "
             />
@@ -132,4 +139,3 @@ export function CreateServiceModal({
     </div>
   );
 }
-``

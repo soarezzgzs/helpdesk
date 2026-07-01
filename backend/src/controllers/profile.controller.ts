@@ -100,6 +100,38 @@ class ProfileController {
     user;
 
   return res.json(userData);
+    }
+
+    async deleteAvatar(
+  req: Request,
+  res: Response
+) {
+
+  const user = await prisma.user.findUnique({
+    where: {
+      id: req.user?.id
+    }
+  })
+
+  if (!user) {
+    throw new AppError(
+      "Usuário não encontrado.",
+      404
+    )
+  }
+
+  await prisma.user.update({
+    where: {
+      id: user.id
+    },
+    data: {
+      avatarUrl: null
+    }
+  })
+
+  return res.status(200).json({
+    message: "Avatar removido com sucesso."
+  })
 }
 
 }
