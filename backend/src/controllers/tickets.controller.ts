@@ -318,6 +318,10 @@ class TicketsController {
             throw new AppError("Ticket nao encontrado.", 404)
         }
 
+        if(ticket.status === TicketStatus.closed){
+            throw new AppError("Ticket ja fechado.", 400)
+        }
+
         if(req.user?.role === UserRole.technician && ticket.technicianId !== req.user.id){
             throw new AppError("Usuário nao pode adicionar um servico ao ticket de outro tecnico.", 403)
         }

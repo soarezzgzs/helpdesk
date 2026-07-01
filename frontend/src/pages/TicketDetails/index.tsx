@@ -209,6 +209,8 @@ async function handleAddAdditionalService() {
       }
     );
 
+
+
     setShowAdditionalServiceModal(false);
 
     setServiceDescription("");
@@ -330,7 +332,8 @@ async function handleAddAdditionalService() {
 
       </div>
 
-      <button
+      {ticket.status !== "closed" && (
+        <button
         onClick={handleAddAdditionalService}
         className="
           w-full
@@ -344,6 +347,7 @@ async function handleAddAdditionalService() {
       >
         Salvar
       </button>
+      )}
 
     </div>
 
