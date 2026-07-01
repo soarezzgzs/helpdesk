@@ -7,7 +7,8 @@ import {
   Pencil,
   PlayCircle,
   CheckCircle,
-  CircleDot,
+  CircleQuestionMark,
+  Clock
 } from "lucide-react";
 
 import { Link } from "react-router-dom";
@@ -267,15 +268,15 @@ export function Technician() {
                 h-8
                 w-8
                 rounded-full
-                bg-pink-100
+                bg-red-200
                 flex
                 items-center
                 justify-center
               "
             >
-              <CircleDot
+              <CircleQuestionMark
                 size={16}
-                className="text-pink-500"
+                className="text-red-100"
               />
             </div>
           )}
@@ -286,15 +287,15 @@ export function Technician() {
                 h-8
                 w-8
                 rounded-full
-                bg-blue-100
+                bg-blue-200
                 flex
                 items-center
                 justify-center
               "
             >
-              <CircleDot
+              <Clock
                 size={16}
-                className="text-blue-500"
+                className="text-blue-100"
               />
             </div>
           )}
@@ -305,7 +306,7 @@ export function Technician() {
                 h-8
                 w-8
                 rounded-full
-                bg-green-100
+                bg-green-200
                 flex
                 items-center
                 justify-center
@@ -313,7 +314,7 @@ export function Technician() {
             >
               <CheckCircle
                 size={16}
-                className="text-green-600"
+                className="text-green-100"
               />
             </div>
           )}
@@ -336,8 +337,8 @@ export function Technician() {
 
         <span
           className="
-            bg-blue-100
-            text-blue-700
+            bg-blue-200
+            text-blue-100
             px-4
             py-1
             rounded-full
@@ -366,8 +367,8 @@ export function Technician() {
 
         <span
           className="
-            bg-pink-100
-            text-pink-600
+            bg-red-200
+            text-red-100
             px-4
             py-1
             rounded-full
@@ -396,8 +397,8 @@ export function Technician() {
 
         <span
           className="
-            bg-green-100
-            text-green-700
+            bg-green-200
+            text-green-100
             px-4
             py-1
             rounded-full

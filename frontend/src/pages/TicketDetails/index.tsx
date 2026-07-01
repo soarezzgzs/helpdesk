@@ -6,7 +6,7 @@ import { api } from "../../services/api";
 
 import {useAuth} from "../../contexts/AuthContext"
 
-import {ArrowLeft, CircleDot, Trash2} from "lucide-react"
+import {ArrowLeft, Clock, CircleCheckBig, CircleQuestionMark ,Trash2} from "lucide-react"
 
 interface Ticket {
   id: string;
@@ -96,14 +96,14 @@ export function TicketDetails() {
           <span
           className="
           flex items-center gap-2
-          bg-pink-100
-          text-pink-600
+          bg-red-200
+          text-red-100
           px-4 py-1
           rounded-full
           text-sm
           "
           >
-          <CircleDot size={14} />
+          <CircleQuestionMark size={14} />
           Aberto
         </span>
       );
@@ -113,14 +113,14 @@ export function TicketDetails() {
           <span
           className="
           flex items-center gap-2
-          bg-blue-100
-          text-blue-600
+          bg-blue-200
+          text-blue-100
           px-4 py-1
           rounded-full
           text-sm
           "
           >
-          <CircleDot size={14} />
+          <Clock size={14} />
           Em atendimento
         </span>
       );
@@ -130,14 +130,14 @@ export function TicketDetails() {
           <span
           className="
           flex items-center gap-2
-          bg-green-100
-          text-green-600
+          bg-green-200
+          text-green-100
           px-4 py-1
             rounded-full
             text-sm
           "
           >
-          <CircleDot size={14} />
+          <CircleCheckBig size={14} />
           Encerrado
         </span>
       );

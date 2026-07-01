@@ -1,7 +1,7 @@
 import { AppLayout } from "../../layouts/AppLayout";
 import { useEffect, useState } from "react";
 import { api } from "../../services/api";
-import { Eye } from "lucide-react";
+import { Eye, CircleQuestionMark, Clock, CircleCheckBig} from "lucide-react";
 import { Link } from "react-router-dom";
 
 interface Ticket {
@@ -42,21 +42,24 @@ export function Client() {
     switch (status) {
       case "open":
         return (
-          <span className="bg-pink-100 text-pink-600 px-3 py-1 rounded-full text-xs font-medium">
+          <span className="bg-red-200 text-red-100 px-3 py-1 rounded-full text-xs w-fit font-medium flex justify-center items-center gap-1">
+            <CircleQuestionMark size={14} />
             Aberto
           </span>
         );
 
       case "in_progress":
         return (
-          <span className="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-xs font-medium">
+          <span className="bg-blue-200 text-blue-600 px-3 py-1 rounded-full text-xs w-fit font-medium flex justify-center items-center gap-1">
+            <Clock size={14} />
             Em atendimento
           </span>
         );
 
       case "closed":
         return (
-          <span className="bg-green-100 text-green-600 px-3 py-1 rounded-full text-xs font-medium">
+          <span className="bg-green-200 text-green-100 px-3 py-1 rounded-full text-xs w-fit font-medium flex justify-center items-center gap-1">
+            <CircleCheckBig size={14} />
             Encerrado
           </span>
         );
@@ -185,7 +188,7 @@ export function Client() {
 
 )}
 
-                        <span>
+                        <span className="text-sm text-zinc-600">
                           {ticket.technician.name}
                         </span>
 
@@ -203,6 +206,12 @@ export function Client() {
                           p-2
                           rounded-lg
                           bg-zinc-100
+                          text-zinc-600
+                          w-8
+                          h-8
+                          flex
+                          items-center
+                          justify-center
                           hover:bg-zinc-200
                           transition
                         "
