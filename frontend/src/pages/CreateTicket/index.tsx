@@ -87,7 +87,7 @@ export function CreateTicket() {
       <div className="space-y-6">
 
         <Link
-          to="/client"
+          to="/tickets/my-tickets"
           className="
             inline-flex
             items-center

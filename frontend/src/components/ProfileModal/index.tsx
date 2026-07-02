@@ -191,32 +191,69 @@ function toggleHour(hour: string) {
 
   }, [isOpen]);
 
+  useEffect(() => {
+
+  function handleEsc(
+    event: KeyboardEvent
+  ) {
+
+    if (
+      event.key === "Escape"
+    ) {
+      onClose();
+    }
+
+  }
+
+  window.addEventListener(
+    "keydown",
+    handleEsc
+  );
+
+  return () => {
+
+    window.removeEventListener(
+      "keydown",
+      handleEsc
+    );
+
+  };
+
+}, [onClose]);
+
   if (!isOpen) {
     return null;
   }
 
   return (
     <div
-      className="
-        fixed
-        inset-0
-        bg-black/40
-        flex
-        items-center
-        justify-center
-        z-50
-      "
-    >
+  className="
+    fixed
+    inset-0
+    bg-black/40
+    flex
+    items-center
+    justify-center
+    z-50
+    p-4
+  "
+  onClick={onClose}
+>
 
       <div
-        className="
-          bg-white
-          rounded-2xl
-          w-full
-          max-w-xl
-          p-8
-        "
-      >
+  onClick={(e) => e.stopPropagation()}
+  className="
+  bg-white
+  rounded-2xl
+  w-full
+  max-w-xl
+  max-h-[90vh]
+  overflow-y-auto
+  p-6
+  md:p-8
+  mx-4
+"
+>
 
         <div className="flex justify-between items-center">
 
@@ -233,7 +270,7 @@ function toggleHour(hour: string) {
 
         </div>
 
-        <div className="mt-8 flex items-center gap-4">
+        <div className="mt-8 flex flex-col items-center gap-4">
 
   {selectedFile ? (
 
@@ -293,7 +330,7 @@ function toggleHour(hour: string) {
 
   )}
 
-  <div className="flex items-center gap-4">
+  <div className="flex flex-col sm:flex-row items-center gap-3">
 
     <button
       type="button"
@@ -418,7 +455,15 @@ function toggleHour(hour: string) {
             Senha
           </label>
 
-          <div className="flex gap-3 mt-2">
+          <div
+  className="
+    flex
+    flex-col
+    sm:flex-row
+    gap-3
+    mt-2
+  "
+>
 
             <input
               value="********"
@@ -519,7 +564,7 @@ function toggleHour(hour: string) {
           onClick={handleSave}
           className="
             w-full
-            mt-8
+            mt-10
             bg-[#3347B0]
             text-white
             py-3

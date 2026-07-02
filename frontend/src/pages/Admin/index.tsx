@@ -6,8 +6,9 @@ import { api } from "../../services/api";
 
 import {
   Pencil,
-  CircleDot,
   CheckCircle,
+  Clock,
+  CircleQuestionMark,
 } from "lucide-react";
 
 interface Ticket {
@@ -64,15 +65,15 @@ export function Admin() {
           <span
             className="
               flex items-center gap-2
-              bg-pink-100
-              text-pink-600
+              bg-red-200
+              text-red-100
               px-3 py-1
               rounded-full
               text-xs
               font-medium
             "
           >
-            <CircleDot size={14} />
+            <Clock size={14} />
             Aberto
           </span>
         );
@@ -82,15 +83,15 @@ export function Admin() {
           <span
             className="
               flex items-center gap-2
-              bg-blue-100
-              text-blue-600
+              bg-blue-200
+              text-blue-100
               px-3 py-1
               rounded-full
               text-xs
               font-medium
             "
           >
-            <CircleDot size={14} />
+            <CircleQuestionMark size={14} />
             Em atendimento
           </span>
         );
@@ -100,8 +101,8 @@ export function Admin() {
           <span
             className="
               flex items-center gap-2
-              bg-green-100
-              text-green-600
+              bg-green-200
+              text-green-100
               px-3 py-1
               rounded-full
               text-xs
@@ -119,279 +120,471 @@ export function Admin() {
   }
 
   return (
-    <AppLayout>
+  <AppLayout>
 
-      <div
+    <div
+      className="
+        bg-white
+        rounded-xl
+        border
+        border-zinc-200
+        p-4
+        md:p-8
+      "
+    >
+
+      <h1
         className="
-          bg-white
-          rounded-xl
-          border
-          border-zinc-200
-          p-8
+          text-2xl
+          md:text-3xl
+          font-semibold
+          text-[#3347B0]
         "
       >
+        Chamados
+      </h1>
 
-        <h1
-          className="
-            text-3xl
-            font-semibold
-            text-[#3347B0]
-          "
-        >
-          Chamados
-        </h1>
+      {/* DESKTOP */}
+      <div className="hidden xl:block mt-8 overflow-x-auto">
 
-        <div className="mt-8 overflow-x-auto">
+        <table className="w-full">
 
-          <table className="w-full">
+          <thead>
 
-            <thead>
+            <tr
+              className="
+                border-b
+                text-left
+                text-sm
+                text-zinc-500
+              "
+            >
 
-              <tr
-                className="
-                  border-b
-                  text-left
-                  text-sm
-                  text-zinc-500
-                "
-              >
+              <th className="pb-4">
+                Atualizado em
+              </th>
 
-                <th className="pb-4">
-                  Atualizado em
-                </th>
+              <th className="pb-4">
+                Id
+              </th>
 
-                <th className="pb-4">
-                  Id
-                </th>
+              <th className="pb-4">
+                Título e Serviço
+              </th>
 
-                <th className="pb-4">
-                  Título e Serviço
-                </th>
+              <th className="pb-4">
+                Valor total
+              </th>
 
-                <th className="pb-4">
-                  Valor total
-                </th>
+              <th className="pb-4">
+                Cliente
+              </th>
 
-                <th className="pb-4">
-                  Cliente
-                </th>
+              <th className="pb-4">
+                Técnico
+              </th>
 
-                <th className="pb-4">
-                  Técnico
-                </th>
+              <th className="pb-4">
+                Status
+              </th>
 
-                <th className="pb-4">
-                  Status
-                </th>
+              <th className="pb-4"></th>
 
-                <th className="pb-4"></th>
+            </tr>
 
-              </tr>
+          </thead>
 
-            </thead>
+          <tbody>
 
-            <tbody>
+            {tickets.map(ticket => {
 
-              {tickets.map(ticket => {
+              const totalValue =
+                ticket.service.amount +
+                ticket.additionalServices.reduce(
+                  (total, service) =>
+                    total + service.amount,
+                  0
+                );
 
-                const totalValue =
-                  ticket.service.amount +
-                  ticket.additionalServices.reduce(
-                    (total, service) =>
-                      total + service.amount,
-                    0
-                  );
+              return (
 
-                return (
+                <tr
+                  key={ticket.id}
+                  className="
+                    border-b
+                    border-zinc-200
+                  "
+                >
 
-                  <tr
-                    key={ticket.id}
-                    className="
-                      border-b
-                      border-zinc-200
-                    "
-                  >
+                  <td className="py-5 text-sm text-zinc-600">
+                    {new Date(
+                      ticket.createdAt
+                    ).toLocaleDateString(
+                      "pt-BR"
+                    )}
+                  </td>
 
-                    <td className="py-5 text-sm text-zinc-600">
+                  <td className="text-sm font-medium">
+                    #{ticket.id.slice(0, 5)}
+                  </td>
 
-                      {new Date(
-                        ticket.createdAt
-                      ).toLocaleDateString(
-                        "pt-BR"
-                      )}
+                  <td>
 
-                    </td>
+                    <div>
 
-                    <td className="text-sm font-medium">
-                      #{ticket.id.slice(0, 5)}
-                    </td>
+                      <p className="font-medium">
+                        {ticket.title}
+                      </p>
 
-                    <td>
-
-                      <div>
-
-                        <p className="font-medium">
-                          {ticket.title}
-                        </p>
-
-                        <p
-                          className="
-                            text-sm
-                            text-zinc-500
-                          "
-                        >
-                          {ticket.service.name}
-                        </p>
-
-                      </div>
-
-                    </td>
-
-                    <td>
-
-                      {totalValue.toLocaleString(
-                        "pt-BR",
-                        {
-                          style: "currency",
-                          currency: "BRL",
-                        }
-                      )}
-
-                    </td>
-
-                    <td>
-
-                      <div className="flex items-center gap-2">
-
-                        {ticket.client.avatarUrl ? (
-
-                          <img
-                            src={`http://localhost:3333/uploads/${ticket.client.avatarUrl}`}
-                            alt={ticket.client.name}
-                            className="
-                              h-6
-                              w-6
-                              rounded-full
-                              object-cover
-                            "
-                          />
-
-                        ) : (
-
-                          <div
-                            className="
-                              h-6
-                              w-6
-                              rounded-full
-                              bg-blue-600
-                              text-white
-                              text-xs
-                              flex
-                              items-center
-                              justify-center
-                            "
-                          >
-                            {ticket.client.name
-                              .charAt(0)
-                              .toUpperCase()}
-                          </div>
-
-                        )}
-
-                        <span>
-                          {ticket.client.name}
-                        </span>
-
-                      </div>
-
-                    </td>
-
-                    <td>
-
-                      <div className="flex items-center gap-2">
-
-                        {ticket.technician.avatarUrl ? (
-
-                          <img
-                            src={`http://localhost:3333/uploads/${ticket.technician.avatarUrl}`}
-                            alt={ticket.technician.name}
-                            className="
-                              h-6
-                              w-6
-                              rounded-full
-                              object-cover
-                            "
-                          />
-
-                        ) : (
-
-                          <div
-                            className="
-                              h-6
-                              w-6
-                              rounded-full
-                              bg-blue-600
-                              text-white
-                              text-xs
-                              flex
-                              items-center
-                              justify-center
-                            "
-                          >
-                            {ticket.technician.name
-                              .charAt(0)
-                              .toUpperCase()}
-                          </div>
-
-                        )}
-
-                        <span>
-                          {ticket.technician.name}
-                        </span>
-
-                      </div>
-
-                    </td>
-
-                    <td className="py-5 pr-5 text-sm text-zinc-600">
-                      {getStatusBadge(
-                        ticket.status
-                      )}
-                    </td>
-
-                    <td>
-
-                      <Link
-                        to={`/ticket/${ticket.id}`}
+                      <p
                         className="
-                          h-8
-                          w-8
-                          rounded
-                          bg-zinc-100
-                          hover:bg-zinc-200
-                          flex
-                          items-center
-                          justify-center
+                          text-sm
+                          text-zinc-500
                         "
                       >
-                        <Pencil size={15} />
-                      </Link>
+                        {ticket.service.name}
+                      </p>
 
-                    </td>
+                    </div>
 
-                  </tr>
+                  </td>
 
-                );
-              })}
+                  <td>
 
-            </tbody>
+                    {totalValue.toLocaleString(
+                      "pt-BR",
+                      {
+                        style: "currency",
+                        currency: "BRL",
+                      }
+                    )}
 
-          </table>
+                  </td>
 
-        </div>
+                  <td>
+
+                    <div className="flex items-center gap-2">
+
+                      {ticket.client.avatarUrl ? (
+
+                        <img
+                          src={`http://localhost:3333/uploads/${ticket.client.avatarUrl}`}
+                          alt={ticket.client.name}
+                          className="
+                            h-6
+                            w-6
+                            rounded-full
+                            object-cover
+                          "
+                        />
+
+                      ) : (
+
+                        <div
+                          className="
+                            h-6
+                            w-6
+                            rounded-full
+                            bg-blue-600
+                            text-white
+                            text-xs
+                            flex
+                            items-center
+                            justify-center
+                          "
+                        >
+                          {ticket.client.name
+                            .charAt(0)
+                            .toUpperCase()}
+                        </div>
+
+                      )}
+
+                      <span>
+                        {ticket.client.name}
+                      </span>
+
+                    </div>
+
+                  </td>
+
+                  <td>
+
+                    <div className="flex items-center gap-2">
+
+                      {ticket.technician.avatarUrl ? (
+
+                        <img
+                          src={`http://localhost:3333/uploads/${ticket.technician.avatarUrl}`}
+                          alt={ticket.technician.name}
+                          className="
+                            h-6
+                            w-6
+                            rounded-full
+                            object-cover
+                          "
+                        />
+
+                      ) : (
+
+                        <div
+                          className="
+                            h-6
+                            w-6
+                            rounded-full
+                            bg-blue-600
+                            text-white
+                            text-xs
+                            flex
+                            items-center
+                            justify-center
+                          "
+                        >
+                          {ticket.technician.name
+                            .charAt(0)
+                            .toUpperCase()}
+                        </div>
+
+                      )}
+
+                      <span>
+                        {ticket.technician.name}
+                      </span>
+
+                    </div>
+
+                  </td>
+
+                  <td>
+
+                    <div className="flex items-center gap-2">
+
+                      {ticket.client.avatarUrl ? (
+
+                        <img
+                          src={`http://localhost:3333/uploads/${ticket.client.avatarUrl}`}
+                          alt={ticket.client.name}
+                          className="
+                            h-6
+                            w-6
+                            rounded-full
+                            object-cover
+                          "
+                        />
+
+                      ) : (
+
+                        <div
+                          className="
+                            h-6
+                            w-6
+                            rounded-full
+                            bg-blue-600
+                            text-white
+                            text-xs
+                            flex
+                            items-center
+                            justify-center
+                          "
+                        >
+                          {ticket.client.name
+                            .charAt(0)
+                            .toUpperCase()}
+                        </div>
+
+                      )}
+
+                      <span>
+                        {ticket.client.name}
+                      </span>
+
+                    </div>
+
+                  </td>
+
+                  <td>
+
+                    <div className="flex items-center gap-2">
+
+                      {ticket.technician.avatarUrl ? (
+
+                        <img
+                          src={`http://localhost:3333/uploads/${ticket.technician.avatarUrl}`}
+                          alt={ticket.technician.name}
+                          className="
+                            h-6
+                            w-6
+                            rounded-full
+                            object-cover
+                          "
+                        />
+
+                      ) : (
+
+                        <div
+                          className="
+                            h-6
+                            w-6
+                            rounded-full
+                            bg-blue-600
+                            text-white
+                            text-xs
+                            flex
+                            items-center
+                            justify-center
+                          "
+                        >
+                          {ticket.technician.name
+                            .charAt(0)
+                            .toUpperCase()}
+                        </div>
+
+                      )}
+
+                      <span>
+                        {ticket.technician.name}
+                      </span>
+
+                    </div>
+
+                  </td>
+
+                  <td>
+
+                    <Link
+                      to={`/ticket/${ticket.id}`}
+                      className="
+                        h-9
+                        w-9
+                        rounded-lg
+                        bg-zinc-100
+                        hover:bg-zinc-200
+                        flex
+                        items-center
+                        justify-center
+                      "
+                    >
+                      <Pencil size={15} />
+                    </Link>
+
+                  </td>
+
+                </tr>
+
+              );
+
+            })}
+
+          </tbody>
+
+        </table>
 
       </div>
 
-    </AppLayout>
-  );
+      {/* MOBILE + TABLET */}
+      <div className="xl:hidden mt-6 space-y-4">
+
+        {tickets.map(ticket => {
+
+          const totalValue =
+            ticket.service.amount +
+            ticket.additionalServices.reduce(
+              (total, service) =>
+                total + service.amount,
+              0
+            );
+
+          return (
+
+            <div
+              key={ticket.id}
+              className="
+                border
+                border-zinc-200
+                rounded-xl
+                p-4
+              "
+            >
+
+              <div className="flex justify-between items-start">
+
+                <div>
+
+                  <p className="text-xs text-zinc-500">
+                    {new Date(
+                      ticket.createdAt
+                    ).toLocaleDateString(
+                      "pt-BR"
+                    )}
+                  </p>
+
+                  <h3 className="font-medium mt-1">
+                    {ticket.title}
+                  </h3>
+
+                </div>
+
+                <Link
+                  to={`/ticket/${ticket.id}`}
+                  className="
+                    h-9
+                    w-9
+                    rounded-lg
+                    bg-zinc-100
+                    flex
+                    items-center
+                    justify-center
+                  "
+                >
+                  <Pencil size={16} />
+                </Link>
+
+              </div>
+
+              <div className="mt-4">
+
+                <p className="text-xs text-zinc-500">
+                  Serviço
+                </p>
+
+                <p className="text-sm font-medium">
+                  {ticket.service.name}
+                </p>
+
+              </div>
+
+              <div className="mt-4">
+
+                <p className="text-xs text-zinc-500">
+                  Valor
+                </p>
+
+                <p className="text-sm font-medium">
+                  {totalValue.toLocaleString(
+                    "pt-BR",
+                    {
+                      style: "currency",
+                      currency: "BRL",
+                    }
+                  )}
+                </p>
+
+              </div>
+
+              <div className="mt-4">
+                {getStatusBadge(ticket.status)}
+              </div>
+
+            </div>
+
+          );
+
+        })}
+
+      </div>
+
+    </div>
+
+  </AppLayout>
+);
 }

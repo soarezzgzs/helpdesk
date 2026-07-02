@@ -79,7 +79,8 @@ export function Sidebar() {
       <aside
         className="
           relative
-          w-64
+          w-72
+          md:w-64
           h-screen
           shrink-0
           bg-[#11131A]
@@ -94,7 +95,7 @@ export function Sidebar() {
           <img
             src={logo}
             alt="HelpDesk"
-            className="w-36 mb-10"
+            className="w-36 mb-8"
           />
 
           <nav className="space-y-2">
@@ -200,21 +201,27 @@ export function Sidebar() {
         {showMenu && (
 
   <div
-    className="
-      absolute
-      bottom-0
-      left-full
-      ml-8
-      bg-[#0B0D14]
-      border
-      border-zinc-800
-      rounded-xl
-      p-5
-      shadow-2xl
-      w-56
-      z-50
-    "
-  >
+  className="
+    absolute
+
+    md:bottom-0
+    md:left-full
+    md:ml-8
+
+    bottom-full
+    left-0
+    mb-3
+
+    bg-[#0B0D14]
+    border
+    border-zinc-800
+    rounded-xl
+    p-5
+    shadow-2xl
+    w-56
+    z-50
+  "
+>
 
     <p
       className="

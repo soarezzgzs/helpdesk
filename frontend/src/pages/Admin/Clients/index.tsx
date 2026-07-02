@@ -52,205 +52,342 @@ export function AdminClients() {
   }, []);
 
   return (
-    <AppLayout>
+  <AppLayout>
 
-      <div
+    <div
+      className="
+        bg-white
+        rounded-xl
+        border
+        border-zinc-200
+        p-4
+        md:p-8
+      "
+    >
+
+      <h1
         className="
-          bg-white
-          rounded-xl
-          border
-          border-zinc-200
-          p-8
+          text-2xl
+          md:text-3xl
+          font-semibold
+          text-[#3347B0]
         "
       >
+        Clientes
+      </h1>
 
-        <h1
-          className="
-            text-3xl
-            font-semibold
-            text-[#3347B0]
-          "
-        >
-          Clientes
-        </h1>
+      {/* DESKTOP */}
+      <div className="hidden xl:block mt-8 overflow-x-auto">
 
-        <div className="mt-8 overflow-x-auto">
+        <table className="w-full">
 
-          <table className="w-full">
+          <thead>
 
-            <thead>
+            <tr
+              className="
+                border-b
+                text-left
+                text-sm
+                text-zinc-500
+              "
+            >
+
+              <th className="pb-4">
+                Nome
+              </th>
+
+              <th className="pb-4">
+                E-mail
+              </th>
+
+              <th className="pb-4"></th>
+
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+            {clients.map(client => (
 
               <tr
+                key={client.id}
                 className="
                   border-b
-                  text-left
-                  text-sm
-                  text-zinc-500
+                  border-zinc-200
+                  hover:bg-zinc-50
                 "
               >
 
-                <th className="pb-4">
-                  Nome
-                </th>
+                <td className="py-5">
 
-                <th className="pb-4">
-                  E-mail
-                </th>
+                  <div className="flex items-center gap-3">
 
-                <th className="pb-4"></th>
+                    {client.avatarUrl ? (
+
+                      <img
+                        src={`http://localhost:3333/uploads/${client.avatarUrl}`}
+                        alt={client.name}
+                        className="
+                          h-8
+                          w-8
+                          rounded-full
+                          object-cover
+                        "
+                      />
+
+                    ) : (
+
+                      <div
+                        className="
+                          h-8
+                          w-8
+                          rounded-full
+                          bg-blue-700
+                          text-white
+                          text-xs
+                          flex
+                          items-center
+                          justify-center
+                        "
+                      >
+                        {client.name
+                          .split(" ")
+                          .map(word => word[0])
+                          .slice(0, 2)
+                          .join("")
+                          .toUpperCase()}
+                      </div>
+
+                    )}
+
+                    <span>
+                      {client.name}
+                    </span>
+
+                  </div>
+
+                </td>
+
+                <td>
+                  {client.email}
+                </td>
+
+                <td>
+
+                  <div className="flex justify-end gap-3">
+
+                    <button
+                      onClick={() => {
+                        setSelectedClientId(client.id);
+                        setShowDeleteModal(true);
+                      }}
+                      className="
+                        h-8
+                        w-8
+                        rounded
+                        bg-red-50
+                        text-red-500
+                        flex
+                        items-center
+                        justify-center
+                      "
+                    >
+                      <Trash2 size={14} />
+                    </button>
+
+                    <button
+                      onClick={() => {
+                        setSelectedClientId(client.id);
+                        setShowEditModal(true);
+                      }}
+                      className="
+                        h-8
+                        w-8
+                        rounded
+                        bg-zinc-100
+                        flex
+                        items-center
+                        justify-center
+                      "
+                    >
+                      <Pencil size={14} />
+                    </button>
+
+                  </div>
+
+                </td>
 
               </tr>
 
-            </thead>
+            ))}
 
-            <tbody>
+          </tbody>
 
-              {clients.map(client => (
+        </table>
 
-                <tr
-                  key={client.id}
-                  className="
-                    border-b
-                    border-zinc-200
-                    hover:bg-zinc-50
-                  "
-                >
+      </div>
 
-                  <td className="py-5">
+      {/* MOBILE + TABLET */}
+      
 
-                    <div className="flex items-center gap-3">
+       {/* MOBILE + TABLET */}
+<div className="xl:hidden mt-6 space-y-4">
 
-                      {client.avatarUrl ? (
+  {clients.map(client => (
 
-                        <img
-                          src={`http://localhost:3333/uploads/${client.avatarUrl}`}
-                          alt={client.name}
-                          className="
-                            h-8
-                            w-8
-                            rounded-full
-                            object-cover
-                          "
-                        />
+    <div
+      key={client.id}
+      className="
+        border
+        border-zinc-200
+        rounded-xl
+        p-4
+      "
+    >
 
-                      ) : (
+      <div className="flex items-start gap-3">
 
-                        <div
-                          className="
-                            h-8
-                            w-8
-                            rounded-full
-                            bg-blue-700
-                            text-white
-                            text-xs
-                            flex
-                            items-center
-                            justify-center
-                          "
-                        >
-                          {client.name
-                            .split(" ")
-                            .map(word => word[0])
-                            .slice(0, 2)
-                            .join("")
-                            .toUpperCase()}
-                        </div>
+        {client.avatarUrl ? (
 
-                      )}
+          <img
+            src={`http://localhost:3333/uploads/${client.avatarUrl}`}
+            alt={client.name}
+            className="
+              h-10
+              w-10
+              rounded-full
+              object-cover
+              shrink-0
+            "
+          />
 
-                      <span>
-                        {client.name}
-                      </span>
+        ) : (
 
-                    </div>
+          <div
+            className="
+              h-10
+              w-10
+              rounded-full
+              bg-blue-700
+              text-white
+              text-sm
+              flex
+              items-center
+              justify-center
+              shrink-0
+            "
+          >
+            {client.name
+              .split(" ")
+              .map(word => word[0])
+              .slice(0, 2)
+              .join("")
+              .toUpperCase()}
+          </div>
 
-                  </td>
+        )}
 
-                  <td>
-                    {client.email}
-                  </td>
+        <div className="flex-1 min-w-0">
 
-                  <td>
+          <p className="font-medium">
+            {client.name}
+          </p>
 
-                    <div className="flex justify-end gap-3">
-
-                      <button
-                        onClick={() => {
-                          setSelectedClientId(client.id);
-                          setShowDeleteModal(true);
-                        }}
-                        className="
-                          h-8
-                          w-8
-                          rounded
-                          bg-red-50
-                          text-red-500
-                          flex
-                          items-center
-                          justify-center
-                        "
-                      >
-                        <Trash2 size={14} />
-                      </button>
-
-                      <button
-                        onClick={() => {
-                          setSelectedClientId(client.id);
-                          setShowEditModal(true);
-                        }}
-                        className="
-                          h-8
-                          w-8
-                          rounded
-                          bg-zinc-100
-                          flex
-                          items-center
-                          justify-center
-                        "
-                      >
-                        <Pencil size={14} />
-                      </button>
-
-                    </div>
-
-                  </td>
-
-                </tr>
-
-              ))}
-
-            </tbody>
-
-          </table>
+          <p
+            className="
+              text-sm
+              text-zinc-500
+              break-all
+            "
+          >
+            {client.email}
+          </p>
 
         </div>
 
       </div>
 
-      {showEditModal && (
+      <div
+        className="
+          flex
+          justify-end
+          gap-3
+          mt-4
+        "
+      >
 
-        <EditClientModal
-          clientId={selectedClientId}
-          onClose={() =>
-            setShowEditModal(false)
-          }
-          onSuccess={loadClients}
-        />
+        <button
+          onClick={() => {
+            setSelectedClientId(client.id);
+            setShowDeleteModal(true);
+          }}
+          className="
+            h-9
+            w-9
+            rounded-lg
+            bg-red-50
+            text-red-500
+            flex
+            items-center
+            justify-center
+          "
+        >
+          <Trash2 size={16} />
+        </button>
+        <button
+          onClick={() => {
+            setSelectedClientId(client.id);
+            setShowEditModal(true);
+          }}
+          className="
+            h-9
+            w-9
+            rounded-lg
+            bg-zinc-100
+            text-zinc-500
+            flex
+            items-center
+            justify-center
+          "
+        >
+          <Pencil size={16} />
+        </button>
 
-      )}
+      </div>
 
-      {showDeleteModal && (
+    </div>
 
-        <DeleteClientModal
-          clientId={selectedClientId}
-          onClose={() =>
-            setShowDeleteModal(false)
-          }
-          onSuccess={loadClients}
-        />
+  ))}
 
-      )}
+</div>
 
-    </AppLayout>
-  );
+    {showEditModal && (
+
+      <EditClientModal
+        clientId={selectedClientId}
+        onClose={() =>
+          setShowEditModal(false)
+        }
+        onSuccess={loadClients}
+      />
+
+    )}
+
+    {showDeleteModal && (
+
+      <DeleteClientModal
+        clientId={selectedClientId}
+        onClose={() =>
+          setShowDeleteModal(false)
+        }
+        onSuccess={loadClients}
+      />
+
+    )}
+
+    </div>
+
+  </AppLayout>
+);
 }

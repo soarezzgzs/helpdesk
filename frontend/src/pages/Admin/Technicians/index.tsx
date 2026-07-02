@@ -52,15 +52,17 @@ export function AdminTechnicians() {
           rounded-xl
           border
           border-zinc-200
-          p-8
+          p-4
+          md:p-8
         "
       >
 
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center gap-4">
 
           <h1
             className="
-              text-3xl
+              text-2xl
+              md:text-3xl
               font-semibold
               text-[#3347B0]
             "
@@ -69,26 +71,31 @@ export function AdminTechnicians() {
           </h1>
 
           <Link
-          to={"/technicians/admin/new"}
-            className="
-              flex
-              items-center
-              gap-2
-              bg-zinc-900
-              text-white
-              px-4
-              py-2
-              rounded-lg
-              hover:bg-zinc-800
-            "
-          >
+  to={"/technicians/admin/new"}
+  className="
+    flex
+    items-center
+    justify-center
+    gap-2
+    bg-zinc-900
+    text-white
+    h-10
+    w-10
+    md:w-auto
+    md:px-4
+    rounded-lg
+  "
+>
             <Plus size={16} />
-            Novo
+
+<span className="hidden md:inline">
+  Novo
+</span>
           </Link>
 
         </div>
 
-        <div className="mt-8 overflow-x-auto">
+        <div className="mt-8">
 
           <table className="w-full">
 
@@ -107,7 +114,7 @@ export function AdminTechnicians() {
                   Nome
                 </th>
 
-                <th className="pb-4">
+                <th className="hidden md:table-cell pb-4">
                   E-mail
                 </th>
 
@@ -188,7 +195,7 @@ export function AdminTechnicians() {
 
                     </td>
 
-                    <td>
+                    <td className="hidden md:table-cell">
                       {technician.email}
                     </td>
 
@@ -197,7 +204,7 @@ export function AdminTechnicians() {
                       <div className="flex flex-wrap gap-2">
 
                         {technician.availability
-                          ?.slice(0, 4)
+                          ?.slice(0, 1)
                           .map(hour => (
 
                             <span
@@ -247,8 +254,10 @@ export function AdminTechnicians() {
                       <Link
                         to={`/technicians/admin/edit/${technician.id}`}
                         className="
-                          h-8
-                          w-8
+                          h-7
+                          w-7
+                          md:w-8
+                          md:h-8
                           rounded
                           bg-zinc-100
                           hover:bg-zinc-200

@@ -69,167 +69,323 @@ export function Client() {
     }
   }
 
+
   return (
-    <AppLayout>
-      <div className="bg-white rounded-xl border border-zinc-200 p-8">
+  <AppLayout>
+    <div className="bg-white rounded-xl border border-zinc-200 p-4 md:p-8">
 
-        <h1 className="text-3xl font-semibold text-[#3347B0]">
-          Meus chamados
-        </h1>
+      <h1 className="text-2xl md:text-3xl font-semibold text-[#3347B0]">
+        Meus chamados
+      </h1>
 
-        <div className="mt-8 overflow-x-auto">
+      {/* DESKTOP */}
+      <div className="hidden xl:block mt-8 overflow-x-auto">
 
-          <table className="w-full">
+        <table className="w-full">
 
-            <thead>
-              <tr className="text-left text-sm text-zinc-500 border-b">
+          <thead>
+            <tr className="text-left text-sm text-zinc-500 border-b">
 
-                <th className="pb-4 font-medium">
-                  Atualizado em
-                </th>
+              <th className="pb-4 font-medium">
+                Atualizado em
+              </th>
 
-                <th className="pb-4 font-medium">
-                  Id
-                </th>
+              <th className="pb-4 font-medium">
+                Id
+              </th>
 
-                <th className="pb-4 font-medium">
-                  Título
-                </th>
+              <th className="pb-4 font-medium">
+                Título
+              </th>
 
-                <th className="pb-4 font-medium">
-                  Serviço
-                </th>
+              <th className="pb-4 font-medium">
+                Serviço
+              </th>
 
-                <th className="pb-4 font-medium">
-                  Valor total
-                </th>
+              <th className="pb-4 font-medium">
+                Valor total
+              </th>
 
-                <th className="pb-4 font-medium">
-                  Técnico
-                </th>
+              <th className="pb-4 font-medium">
+                Técnico
+              </th>
 
-                <th className="pb-4 font-medium">
-                  Status
-                </th>
+              <th className="pb-4 font-medium">
+                Status
+              </th>
 
-                <th className="pb-4"></th>
+              <th className="pb-4"></th>
 
-              </tr>
-            </thead>
+            </tr>
+          </thead>
 
-            <tbody>
-              {tickets.map((ticket) => {
+          <tbody>
 
+            {tickets.map((ticket) => (
 
-                return (
-                  <tr
-                    key={ticket.id}
-                    className="border-b border-zinc-200"
-                  >
-                    <td className="py-5 text-sm text-zinc-600">
-                      {new Date(ticket.createdAt)
-                        .toLocaleDateString("pt-BR")}
-                    </td>
+              <tr
+                key={ticket.id}
+                className="border-b border-zinc-200"
+              >
 
-                    <td className="text-sm font-medium">
-                      {ticket.id.slice(0, 5)}
-                    </td>
+                <td className="py-5 text-sm text-zinc-600">
+                  {new Date(ticket.createdAt)
+                    .toLocaleDateString("pt-BR")}
+                </td>
 
-                    <td className="font-medium">
-                      {ticket.title}
-                    </td>
+                <td className="text-sm font-medium">
+                  {ticket.id.slice(0, 5)}
+                </td>
 
-                    <td>
-                      {ticket.service.name}
-                    </td>
+                <td className="font-medium">
+                  {ticket.title}
+                </td>
 
-                    <td>
-                      {ticket.service.amount.toLocaleString("pt-BR", {
-                        style: "currency",
-                        currency: "BRL"
-                      })}
-                    </td>
+                <td>
+                  {ticket.service.name}
+                </td>
 
-                    <td>
-                      <div className="flex items-center gap-2">
+                <td>
+                  {ticket.service.amount.toLocaleString(
+                    "pt-BR",
+                    {
+                      style: "currency",
+                      currency: "BRL",
+                    }
+                  )}
+                </td>
 
-                        {ticket.technician.avatarUrl ? (
+                <td>
 
-  <img
-    src={`http://localhost:3333/uploads/${ticket.technician.avatarUrl}`}
-    alt={ticket.technician.name}
-    className="
-      h-6
-      w-6
-      rounded-full
-      object-cover
-    "
-  />
+                  <div className="flex items-center gap-2">
 
-) : (
+                    {ticket.technician.avatarUrl ? (
 
-  <div
-    className="
-      h-6
-      w-6
-      rounded-full
-      bg-blue-600
-      text-white
-      text-xs
-      flex
-      items-center
-      justify-center
-    "
-  >
-    {ticket.technician.name
-      .charAt(0)
-      .toUpperCase()}
-  </div>
-
-)}
-
-                        <span className="text-sm text-zinc-600">
-                          {ticket.technician.name}
-                        </span>
-
-                      </div>
-                    </td>
-
-                    <td>
-                      {getStatusBadge(ticket.status)}
-                    </td>
-
-                    <td>
-                      <Link
-                      to={`/ticket/${ticket.id}`}
+                      <img
+                        src={`http://localhost:3333/uploads/${ticket.technician.avatarUrl}`}
+                        alt={ticket.technician.name}
                         className="
-                          p-2
-                          rounded-lg
-                          bg-zinc-100
-                          text-zinc-600
-                          w-8
-                          h-8
+                          h-6
+                          w-6
+                          rounded-full
+                          object-cover
+                        "
+                      />
+
+                    ) : (
+
+                      <div
+                        className="
+                          h-6
+                          w-6
+                          rounded-full
+                          bg-blue-600
+                          text-white
+                          text-xs
                           flex
                           items-center
                           justify-center
-                          hover:bg-zinc-200
-                          transition
                         "
                       >
-                        <Eye size={16} />
-                      </Link>
-                    </td>
+                        {ticket.technician.name
+                          .charAt(0)
+                          .toUpperCase()}
+                      </div>
 
-                  </tr>
-                );
-              })}
-            </tbody>
+                    )}
 
-          </table>
+                    <span className="text-sm text-zinc-600">
+                      {ticket.technician.name}
+                    </span>
 
-        </div>
+                  </div>
+
+                </td>
+
+                <td>
+                  {getStatusBadge(ticket.status)}
+                </td>
+
+                <td>
+
+                  <Link
+                    to={`/ticket/${ticket.id}`}
+                    className="
+                      p-2
+                      rounded-lg
+                      bg-zinc-100
+                      text-zinc-600
+                      w-8
+                      h-8
+                      flex
+                      items-center
+                      justify-center
+                      hover:bg-zinc-200
+                      transition
+                    "
+                  >
+                    <Eye size={16} />
+                  </Link>
+
+                </td>
+
+              </tr>
+
+            ))}
+
+          </tbody>
+
+        </table>
 
       </div>
-    </AppLayout>
-  );
+
+      {/* MOBILE */}
+      <div className="xd:hidden mt-6 space-y-4">
+
+        {tickets.map((ticket) => (
+
+          <div
+            key={ticket.id}
+            className="
+              border
+              border-zinc-200
+              rounded-xl
+              p-4
+              bg-white
+            "
+          >
+
+            <div className="flex justify-between items-start">
+
+              <div>
+
+                <p className="text-xs text-zinc-500">
+                  {new Date(
+                    ticket.createdAt
+                  ).toLocaleDateString(
+                    "pt-BR"
+                  )}
+                </p>
+
+                <h3 className="font-medium mt-1">
+                  {ticket.title}
+                </h3>
+
+              </div>
+
+              <Link
+  to={`/ticket/${ticket.id}`}
+  className="
+    h-9
+    w-9
+    rounded-lg
+    bg-zinc-100
+    flex
+    items-center
+    justify-center
+    hover:bg-zinc-200
+    transition
+  "
+>
+  <Eye size={16} />
+</Link>
+
+            </div>
+
+            <div className="mt-4 space-y-3">
+
+              <div>
+                <p className="text-xs text-zinc-500">
+                  Serviço
+                </p>
+
+                <p className="text-sm font-medium">
+                  {ticket.service.name}
+                </p>
+              </div>
+
+              <div>
+                <p className="text-xs text-zinc-500">
+                  Valor
+                </p>
+
+                <p className="text-sm font-medium">
+                  {ticket.service.amount.toLocaleString(
+                    "pt-BR",
+                    {
+                      style: "currency",
+                      currency: "BRL",
+                    }
+                  )}
+                </p>
+              </div>
+
+              <div>
+
+                <p className="text-xs text-zinc-500 mb-1">
+                  Técnico
+                </p>
+
+                <div className="flex items-center gap-2">
+
+                  {ticket.technician.avatarUrl ? (
+
+                    <img
+                      src={`http://localhost:3333/uploads/${ticket.technician.avatarUrl}`}
+                      alt={ticket.technician.name}
+                      className="h-7 w-7 rounded-full"
+                    />
+
+                  ) : (
+
+                    <div
+                      className="
+                        h-7
+                        w-7
+                        rounded-full
+                        bg-blue-600
+                        text-white
+                        text-xs
+                        flex
+                        items-center
+                        justify-center
+                      "
+                    >
+                      {ticket.technician.name
+                        .charAt(0)
+                        .toUpperCase()}
+                    </div>
+
+                  )}
+
+                  <span className="text-sm">
+                    {ticket.technician.name}
+                  </span>
+
+                </div>
+
+              </div>
+
+              <div>
+
+                <p className="text-xs text-zinc-500 mb-1">
+                  Status
+                </p>
+
+                {getStatusBadge(ticket.status)}
+
+              </div>
+
+            </div>
+
+          </div>
+
+        ))}
+
+      </div>
+
+    </div>
+  </AppLayout>
+);
+
 }
