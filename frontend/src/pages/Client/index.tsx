@@ -1,6 +1,6 @@
 import { AppLayout } from "../../layouts/AppLayout";
 import { useEffect, useState } from "react";
-import { api } from "../../services/api";
+import { api, API_URL } from "../../services/api";
 import { Eye, CircleQuestionMark, Clock, CircleCheckBig} from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -171,7 +171,7 @@ export function Client() {
                     {ticket.technician.avatarUrl ? (
 
                       <img
-                        src={`http://localhost:3333/uploads/${ticket.technician.avatarUrl}`}
+                        src={`${API_URL}/uploads/${ticket.technician.avatarUrl}`}
                         alt={ticket.technician.name}
                         className="
                           h-6
@@ -348,7 +348,7 @@ export function Client() {
                   {ticket.technician.avatarUrl ? (
 
                     <img
-                      src={`http://localhost:3333/uploads/${ticket.technician.avatarUrl}`}
+                      src={`${API_URL}/uploads/${ticket.technician.avatarUrl}`}
                       alt={ticket.technician.name}
                       className="h-7 w-7 rounded-full"
                     />

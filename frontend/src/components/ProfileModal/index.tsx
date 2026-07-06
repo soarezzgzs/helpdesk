@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-import { api } from "../../services/api";
+import { api, API_URL } from "../../services/api";
 import {useAuth} from "../../contexts/AuthContext"
 import { ChangePasswordModal } from "../ChangePasswordModal";
 import {Trash2, Upload} from "lucide-react";
@@ -288,7 +288,7 @@ function toggleHour(hour: string) {
   ) : profile?.avatarUrl ? (
 
     <img
-      src={`http://localhost:3333/uploads/${profile.avatarUrl}`}
+      src={`${API_URL}/uploads/${profile.avatarUrl}`}
       alt={profile.name}
       className="
         h-20

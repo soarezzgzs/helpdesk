@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 import { AppLayout } from "../../../../layouts/AppLayout";
-import { api } from "../../../../services/api";
+import { api, API_URL } from "../../../../services/api";
 
 import { ArrowLeft } from "lucide-react";
 
@@ -346,7 +346,7 @@ export function TechnicianForm() {
     {avatarUrl ? (
 
       <img
-        src={`http://localhost:3333/uploads/${avatarUrl}`}
+        src={`${API_URL}/uploads/${avatarUrl}`}
         alt={name}
         className="
           h-16

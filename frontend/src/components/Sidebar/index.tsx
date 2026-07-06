@@ -8,7 +8,7 @@ import {useNavigate} from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 
 import {LogOut, UserCircle2} from "lucide-react"
-
+import { API_URL} from "../../services/api"
 import {ProfileModal} from "../ProfileModal";
 
 const clientMenu = [
@@ -147,7 +147,7 @@ export function Sidebar() {
 {user?.avatarUrl ? (
 
   <img
-    src={`http://localhost:3333/uploads/${user.avatarUrl}`}
+    src={`${API_URL}/uploads/${user.avatarUrl}`}
     alt={user.name}
     className="
       h-10

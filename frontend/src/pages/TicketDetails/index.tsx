@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 
 import { AppLayout } from "../../layouts/AppLayout";
-import { api } from "../../services/api";
+import { api, API_URL } from "../../services/api";
 
 import {useAuth} from "../../contexts/AuthContext"
 
@@ -523,7 +523,7 @@ async function handleAddAdditionalService() {
                 {ticket.client.avatarUrl ? (
 
   <img
-    src={`http://localhost:3333/uploads/${ticket.client.avatarUrl}`}
+    src={`${API_URL}/uploads/${ticket.client.avatarUrl}`}
     alt={ticket.client.name}
     className="
       h-6
@@ -695,7 +695,7 @@ async function handleAddAdditionalService() {
               {ticket.technician.avatarUrl ? (
 
   <img
-    src={`http://localhost:3333/uploads/${ticket.technician.avatarUrl}`}
+    src={`${API_URL}/uploads/${ticket.technician.avatarUrl}`}
     alt={ticket.technician.name}
     className="
       h-10

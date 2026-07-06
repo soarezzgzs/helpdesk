@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { AppLayout } from "../../layouts/AppLayout";
-import { api } from "../../services/api";
+import { api, API_URL } from "../../services/api";
 
 import {
   Pencil,
@@ -224,7 +224,7 @@ export function Technician() {
             {ticket.client.avatarUrl ? (
 
   <img
-    src={`http://localhost:3333/uploads/${ticket.client.avatarUrl}`}
+    src={`${API_URL}/uploads/${ticket.client.avatarUrl}`}
     alt={ticket.client.name}
     className="
       h-6

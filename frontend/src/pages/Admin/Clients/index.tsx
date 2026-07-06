@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { AppLayout } from "../../../layouts/AppLayout";
-import { api } from "../../../services/api";
+import { api, API_URL } from "../../../services/api";
 
 import { EditClientModal } from "./EditClientModal";
 import { DeleteClientModal } from "./DeleteClientModal";
@@ -126,7 +126,7 @@ export function AdminClients() {
                     {client.avatarUrl ? (
 
                       <img
-                        src={`http://localhost:3333/uploads/${client.avatarUrl}`}
+                        src={`${API_URL}/uploads/${client.avatarUrl}`}
                         alt={client.name}
                         className="
                           h-8
@@ -251,7 +251,7 @@ export function AdminClients() {
         {client.avatarUrl ? (
 
           <img
-            src={`http://localhost:3333/uploads/${client.avatarUrl}`}
+            src={`${API_URL}/uploads/${client.avatarUrl}`}
             alt={client.name}
             className="
               h-10

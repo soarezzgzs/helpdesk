@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { api } from "../../../services/api";
+import { api, API_URL } from "../../../services/api";
 
 interface Props {
   clientId: string;
@@ -108,7 +108,7 @@ export function EditClientModal({
             {avatarUrl ? (
 
               <img
-                src={`http://localhost:3333/uploads/${avatarUrl}`}
+                src={`${API_URL}/uploads/${avatarUrl}`}
                 alt={name}
                 className="
                   h-16

@@ -4,7 +4,7 @@ import { Menu } from "lucide-react";
 import logo from "../assets/logo.svg";
 import {useAuth} from "../contexts/AuthContext";
 import { Sidebar } from "../components/Sidebar";
-
+import { API_URL } from "../services/api";
 interface AppLayoutProps {
   children: ReactNode;
 }
@@ -141,7 +141,7 @@ export function AppLayout({
   {user?.avatarUrl ? (
 
     <img
-      src={`http://localhost:3333/uploads/${user.avatarUrl}`}
+      src={`${API_URL}/uploads/${user.avatarUrl}`}
       alt={user.name}
       className="
         h-10
