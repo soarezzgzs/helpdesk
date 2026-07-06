@@ -16,3 +16,16 @@
   --text-xxs: 0.625rem;
 }
 
+* {
+  font-family: var(--default-font-family);
+  box-sizing: border-box;
+
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+  overflow-y: overlay;
+}
+

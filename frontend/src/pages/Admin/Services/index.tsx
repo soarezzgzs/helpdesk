@@ -7,7 +7,8 @@ import {
   Pencil,
   Plus,
   CircleCheck,
-  CircleOff
+  CircleOff,
+  Ban
 
 } from "lucide-react";
 
@@ -197,7 +198,7 @@ export function AdminServices() {
 
                   <td>
 
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-1">
 
   <span
     className={`
@@ -210,12 +211,12 @@ export function AdminServices() {
       ${
         service.active
           ? `
-            bg-green-100
-            text-green-700
+            bg-green-200
+            text-green-100
           `
           : `
-            bg-red-100
-            text-red-600
+            bg-red-200
+            text-red-100
           `
       }
     `}
@@ -244,7 +245,26 @@ export function AdminServices() {
     )}
 
   </div>
+<button
+  
+  onClick={() => toggleStatus(service.id)}>
+    {service.active ? (
 
+      <Ban
+      className="text-gray-600"
+
+        size={18}
+      />
+
+    ) : (
+
+      <CircleCheck
+      className="text-gray-600"
+        size={18}
+      />
+    )}
+    
+  </button>
   <button
     onClick={() =>
       toggleStatus(service.id)
@@ -260,6 +280,7 @@ export function AdminServices() {
       ? "Desativar"
       : "Reativar"}
   </button>
+  
 
 </div>
 

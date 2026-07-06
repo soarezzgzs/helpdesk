@@ -270,7 +270,7 @@ function toggleHour(hour: string) {
 
         </div>
 
-        <div className="mt-8 flex flex-col items-center gap-4">
+        <div className="mt-8 flex md:flex-row flex-col items-center gap-4">
 
   {selectedFile ? (
 

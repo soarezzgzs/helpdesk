@@ -81,6 +81,15 @@ export function Client() {
       {/* DESKTOP */}
       <div className="hidden xl:block mt-8 overflow-x-auto">
 
+        {tickets.length === 0 && (
+          <p className="text-sm text-zinc-500">
+            Nenhum chamado encontrado.
+          </p>
+        )}
+
+        {tickets.length > 0 && (
+          
+
         <table className="w-full">
 
           <thead>
@@ -236,11 +245,19 @@ export function Client() {
           </tbody>
 
         </table>
+        )}
+        
 
       </div>
 
       {/* MOBILE */}
       <div className="xd:hidden mt-6 space-y-4">
+
+        {tickets.length === 0 && (
+          <p className="text-sm text-zinc-500">
+            Nenhum chamado encontrado.
+          </p>
+        )}
 
         {tickets.map((ticket) => (
 

@@ -6,6 +6,7 @@ import { api } from "../../services/api"
 import {z} from "zod"
 import {useForm} from "react-hook-form"
 import {zodResolver} from "@hookform/resolvers/zod"
+import axios from "axios"
 
 export function Register() {
   const registerSchema = z.object({
@@ -18,7 +19,7 @@ export function Register() {
 
   type RegisterSchema = z.infer<typeof registerSchema>
 
-  const {register, handleSubmit, formState: {errors}} = useForm<RegisterSchema>({resolver: zodResolver(registerSchema)})
+  const {register, handleSubmit, setError, formState: {errors}} = useForm<RegisterSchema>({resolver: zodResolver(registerSchema)})
 
   async function handleRegister(data: RegisterSchema) {
     try {
@@ -33,7 +34,16 @@ export function Register() {
       navigate("/")
 
     } catch (error) {
-      console.log(error)
+      
+      if(axios.isAxiosError(error)) {
+        
+        const message = error.response?.data?.message
+
+        if(message === "Email ja cadastrado.") {
+          setError("email", {type: "manual", message: "Este e-mail já está em uso."})
+        }
+      }
+
     }
   }
 
@@ -131,6 +141,7 @@ export function Register() {
                       outline-none
                     "
                   />
+                  {errors.email && <span className="text-red-500 text-xs">{errors.email.message}</span>}
                 </div>
 
                 <div>

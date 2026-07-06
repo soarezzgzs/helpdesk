@@ -54,6 +54,7 @@ export function AdminTechnicians() {
           border-zinc-200
           p-4
           md:p-8
+          overflow-x-auto
         "
       >
 
@@ -114,7 +115,7 @@ export function AdminTechnicians() {
                   Nome
                 </th>
 
-                <th className="hidden md:table-cell pb-4">
+                <th className="hidden lg:table-cell pb-4">
                   E-mail
                 </th>
 
@@ -195,7 +196,7 @@ export function AdminTechnicians() {
 
                     </td>
 
-                    <td className="hidden md:table-cell">
+                    <td className="hidden lg:table-cell">
                       {technician.email}
                     </td>
 

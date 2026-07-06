@@ -4,7 +4,7 @@ import {api} from "../../services/api"
 import {z} from "zod"
 import {useForm} from "react-hook-form"
 import {zodResolver} from "@hookform/resolvers/zod"
-
+import axios from "axios"
 import {useAuth} from "../../contexts/AuthContext"
 
 import logo from "../../assets/logo-helpdesk.png"
@@ -24,7 +24,7 @@ export function Login() {
   
   type LoginSchema = z.infer<typeof loginSchema>
   
-  const {register, handleSubmit, formState: {errors}} = useForm<LoginSchema>({resolver: zodResolver(loginSchema)})
+  const {register, handleSubmit, setError, formState: {errors}} = useForm<LoginSchema>({resolver: zodResolver(loginSchema)})
 
   async function handleLogin(data: LoginSchema) {
     try {
@@ -50,12 +50,17 @@ export function Login() {
       }
 
     } catch (error) {
-      console.log(error)
+      
+      if(axios.isAxiosError(error)) {
+        setError("email", {type: "manual", message: error.response?.data.message})
+        return
+      }
+
     }
   }
 
   return (
-    <main className="relative min-h-screen overflow-hidden">
+    <main className="relative min-h-screen overflow-x-hidden">
 
   <img
     src={bgLogin}
@@ -74,7 +79,7 @@ export function Login() {
       relative
       ml-auto
       mt-5
-      h-[calc(100vh-20px)]
+      h-[calc(100vh)]
       w-full
       lg:w-[55%]
       bg-[#F5F5F5]
@@ -127,7 +132,6 @@ export function Login() {
                       outline-none
                     "
                   />
-                {errors.email && <span className="text-xs text-red-500">{errors.email.message}</span>}
                 </div>
 
 
@@ -167,6 +171,7 @@ export function Login() {
                 >
                   Entrar
                 </button>
+                {errors.email && <span className="text-xs text-red-500">{errors.email.message}</span>}
 
               </form>
             </div>

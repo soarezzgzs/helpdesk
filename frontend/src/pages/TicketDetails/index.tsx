@@ -358,7 +358,7 @@ async function handleAddAdditionalService() {
   <AppLayout>
     <div className="space-y-6">
 
-      <div className="flex items-start justify-between">
+      <div className="flex  items-center justify-between flex-wrap gap-4">
 
         <div>
 
@@ -378,11 +378,12 @@ async function handleAddAdditionalService() {
             Voltar
           </Link>
 
-          <h1 className="text-4xl font-semibold text-[#3347B0] mt-4">
+          <h1 className="text-3xl font-semibold text-[#3347B0] mt-4 mb-4 w-full">
             Chamado detalhado
           </h1>
 
         </div>
+
 
         {(isTechnician || isAdministrator) && (
 
@@ -433,21 +434,25 @@ async function handleAddAdditionalService() {
 
           <div className="bg-white rounded-xl border border-zinc-200 p-6">
 
-            <div className="flex justify-between items-start">
+            <div className="flex flex-col justify-between">
 
               <div>
+
+                <div className="flex items-center justify-between gap-2 w-full" >
 
                 <span className="text-sm text-zinc-500">
                   {ticket.id.slice(0, 5)}
                 </span>
+              {getStatusBadge(ticket.status) }
 
-                <h2 className="text-2xl font-semibold mt-2">
+                </div>
+
+                <h2 className="text-2xl font-semibold mt-2 mb-2">
                   {ticket.title}
                 </h2>
 
               </div>
 
-              {getStatusBadge(ticket.status)}
 
             </div>
 

@@ -36,7 +36,13 @@ class LoginController {
             }
         })
 
-        res.status(201).json({ message: "Cliente cadastrado com sucesso." });
+        const userWithoutPassword = {
+            name,
+            email,
+            role: UserRole.client
+        }
+
+        res.status(201).json(userWithoutPassword);
     }
 
 }
