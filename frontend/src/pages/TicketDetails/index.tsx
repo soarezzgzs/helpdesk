@@ -51,8 +51,6 @@ export function TicketDetails() {
 
   const isAdministrator = user?.role === "admin";
 
-  const isClient = user?.role === "client";
-
   const backRoute = user?.role === "admin" ? "/tickets/admin" : user?.role === "technician" ? "/tickets/assigned" : "/tickets/my-tickets"
 
   async function loadTicket() {
