@@ -251,7 +251,7 @@ export function Client() {
       </div>
 
       {/* MOBILE */}
-      <div className="xd:hidden mt-6 space-y-4">
+      <div className="xl:hidden mt-6 space-y-4">
 
         {tickets.length === 0 && (
           <p className="text-sm text-zinc-500">
