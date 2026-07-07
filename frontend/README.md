@@ -1,32 +1,163 @@
-# React + TypeScript + Vite
+# 🎨 HelpDesk Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Frontend da aplicação HelpDesk desenvolvido com React, TypeScript e Vite.
 
-Currently, two official plugins are available:
+Projeto desenvolvido como desafio final da formação Full Stack da Rocketseat.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## 🚀 Tecnologias
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- React
+- TypeScript
+- Vite
+- React Router DOM
+- Axios
+- React Hook Form
+- Zod
+- TailwindCSS
+- Lucide React
 
-## Expanding the Oxlint configuration
+---
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+## 📱 Funcionalidades
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+### Cliente
+
+- Login
+- Cadastro
+- Criação de chamados
+- Consulta de chamados
+- Visualização de detalhes
+- Edição de perfil
+- Upload de avatar
+- Alteração de senha
+
+### Técnico
+
+- Visualização de chamados atribuídos
+- Atualização de status
+- Inclusão de serviços adicionais
+- Gerenciamento de disponibilidade
+- Atualização de perfil
+
+### Administrador
+
+- Gestão de chamados
+- Gestão de clientes
+- Gestão de técnicos
+- Gestão de serviços
+
+---
+
+## 📱 Responsividade
+
+A aplicação foi desenvolvida utilizando abordagem Mobile First.
+
+Suporte para:
+
+- Smartphones
+- Tablets
+- Notebooks
+- Monitores Full HD
+- Monitores Ultra Wide
+
+---
+
+## 🗂 Estrutura do Projeto
+
+```txt
+src
+├── assets
+├── components
+├── contexts
+├── hooks
+├── layouts
+├── pages
+├── routes
+├── services
+├── styles
+└── utils
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+---
+
+## 🔐 Autenticação
+
+O frontend utiliza:
+
+- JWT
+- Context API
+- Protected Routes
+
+Controle de acesso por perfil:
+
+- Client
+- Technician
+- Admin
+
+---
+
+## ⚙️ Variáveis de Ambiente
+
+Crie o arquivo:
+
+```env
+.env.production
+```
+
+```env
+VITE_API_URL=https://helpdesk-o88p.onrender.com
+```
+
+---
+
+## 🚀 Executando Localmente
+
+Instalar dependências:
+
+```bash
+npm install
+```
+
+Executar aplicação:
+
+```bash
+npm run dev
+```
+
+Build de produção:
+
+```bash
+npm run build
+```
+
+---
+
+## 🌎 Deploy
+
+Frontend hospedado na:
+
+- Vercel
+
+```txt
+https://helpdesk-ten-iota.vercel.app/
+```
+
+---
+
+## 🎓 Sobre o Projeto
+
+Este projeto foi desenvolvido como desafio final da formação Full Stack da Rocketseat.
+
+---
+
+## 👨‍💻 Desenvolvedor
+
+Leonardo Soares
+
+GitHub:
+https://github.com/soarezzgzs
+
+Linkedin:
+https://www.linkedin.com/in/leonardo-soares-57a19039b/
