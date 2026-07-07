@@ -74,7 +74,6 @@ export function Register() {
       rounded-tl-[28px]
       flex
       justify-center
-      items-center
       px-6
     "
   >
