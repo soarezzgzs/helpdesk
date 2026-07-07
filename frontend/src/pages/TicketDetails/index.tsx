@@ -783,6 +783,47 @@ async function handleAddAdditionalService() {
 
 </div>
 
+{ticket.additionalServices.length > 0 && (
+
+  <div className="mt-4 space-y-2">
+
+    {ticket.additionalServices.map(
+      service => (
+
+        <div
+          key={service.id}
+          className="
+            flex
+            justify-between
+            text-sm
+            text-zinc-500
+            pl-3
+          "
+        >
+
+          <span>
+            {service.description}
+          </span>
+
+          <span>
+            {service.amount.toLocaleString(
+              "pt-BR",
+              {
+                style: "currency",
+                currency: "BRL"
+              }
+            )}
+          </span>
+
+        </div>
+
+      )
+    )}
+
+  </div>
+
+)}
+
               <hr className="my-6" />
 
               <div className="flex justify-between font-semibold text-lg">
