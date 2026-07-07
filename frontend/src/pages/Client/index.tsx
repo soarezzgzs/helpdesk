@@ -19,6 +19,12 @@ interface Ticket {
     name: string;
     amount: number;
   };
+
+  additionalServices: {
+    id: string;
+    description: string;
+    amount: number;
+  }[];
 }
 
 export function Client() {
@@ -130,117 +136,148 @@ export function Client() {
 
           <tbody>
 
-            {tickets.map((ticket) => (
+            {tickets.map((ticket) => {
 
-              <tr
-                key={ticket.id}
-                className="border-b border-zinc-200"
-              >
+  const totalValue =
+    ticket.service.amount +
+    ticket.additionalServices.reduce(
+      (total, service) =>
+        total + service.amount,
+      0
+    );
 
-                <td className="py-5 text-sm text-zinc-600">
-                  {new Date(ticket.createdAt)
-                    .toLocaleDateString("pt-BR")}
-                </td>
+  return (
 
-                <td className="text-sm font-medium">
-                  {ticket.id.slice(0, 5)}
-                </td>
+    <tr
+      key={ticket.id}
+      className="border-b border-zinc-200"
+    >
 
-                <td className="font-medium">
-                  {ticket.title}
-                </td>
+      <td className="py-5 text-sm text-zinc-600">
+        {new Date(ticket.createdAt)
+          .toLocaleDateString("pt-BR")}
+      </td>
 
-                <td>
-                  {ticket.service.name}
-                </td>
+      <td className="text-sm font-medium">
+        {ticket.id.slice(0, 5)}
+      </td>
 
-                <td>
-                  {ticket.service.amount.toLocaleString(
-                    "pt-BR",
-                    {
-                      style: "currency",
-                      currency: "BRL",
-                    }
-                  )}
-                </td>
+      <td className="font-medium">
+        {ticket.title}
+      </td>
 
-                <td>
+      <td>
+        {ticket.service.name}
+      </td>
 
-                  <div className="flex items-center gap-2">
+      <td>
 
-                    {ticket.technician.avatarUrl ? (
+        <div>
 
-                      <img
-                        src={`${API_URL}/uploads/${ticket.technician.avatarUrl}`}
-                        alt={ticket.technician.name}
-                        className="
-                          h-6
-                          w-6
-                          rounded-full
-                          object-cover
-                        "
-                      />
+          <p className="font-medium">
+            {totalValue.toLocaleString(
+              "pt-BR",
+              {
+                style: "currency",
+                currency: "BRL",
+              }
+            )}
+          </p>
 
-                    ) : (
+          {ticket.additionalServices.length > 0 && (
 
-                      <div
-                        className="
-                          h-6
-                          w-6
-                          rounded-full
-                          bg-blue-600
-                          text-white
-                          text-xs
-                          flex
-                          items-center
-                          justify-center
-                        "
-                      >
-                        {ticket.technician.name
-                          .charAt(0)
-                          .toUpperCase()}
-                      </div>
+            <span
+              className="
+                text-xs
+                text-zinc-500
+              "
+            >
+              +{ticket.additionalServices.length}
+              {" "}
+              adicional
+              {ticket.additionalServices.length > 1 && "is"}
+            </span>
 
-                    )}
+          )}
 
-                    <span className="text-sm text-zinc-600">
-                      {ticket.technician.name}
-                    </span>
+        </div>
 
-                  </div>
+      </td>
 
-                </td>
+      <td>
 
-                <td>
-                  {getStatusBadge(ticket.status)}
-                </td>
+        <div className="flex items-center gap-2">
 
-                <td>
+          {ticket.technician.avatarUrl ? (
 
-                  <Link
-                    to={`/ticket/${ticket.id}`}
-                    className="
-                      p-2
-                      rounded-lg
-                      bg-zinc-100
-                      text-zinc-600
-                      w-8
-                      h-8
-                      flex
-                      items-center
-                      justify-center
-                      hover:bg-zinc-200
-                      transition
-                    "
-                  >
-                    <Eye size={16} />
-                  </Link>
+            <img
+              src={ `${API_URL}/uploads/${ticket.technician.avatarUrl}` }
+              alt={ticket.technician.name}
+              className="h-6 w-6 rounded-full"
+            />
 
-                </td>
+          ) : (
 
-              </tr>
+            <div
+              className="
+                h-6
+                w-6
+                rounded-full
+                bg-blue-600
+                text-white
+                text-xs
+                flex
+                items-center
+                justify-center
+              "
+            >
+              {ticket.technician.name
+                .charAt(0)
+                .toUpperCase()}
+            </div>
 
-            ))}
+          )}
+
+          <span className="text-sm text-zinc-600">
+            {ticket.technician.name}
+          </span>
+
+        </div>
+
+      </td>
+
+      <td>
+        {getStatusBadge(ticket.status)}
+      </td>
+
+      <td>
+
+        <Link
+          to={`/ticket/${ticket.id}`}
+          className="
+            p-2
+            rounded-lg
+            bg-zinc-100
+            text-zinc-600
+            w-8
+            h-8
+            flex
+            items-center
+            justify-center
+            hover:bg-zinc-200
+            transition
+          "
+        >
+          <Eye size={16} />
+        </Link>
+
+      </td>
+
+    </tr>
+
+  );
+
+})}
 
           </tbody>
 
@@ -259,7 +296,17 @@ export function Client() {
           </p>
         )}
 
-        {tickets.map((ticket) => (
+        {tickets.map((ticket) => {
+
+           const totalValue =
+    ticket.service.amount +
+    ticket.additionalServices.reduce(
+      (total, service) =>
+        total + service.amount,
+      0
+    );
+
+          return(
 
           <div
             key={ticket.id}
@@ -327,7 +374,7 @@ export function Client() {
                 </p>
 
                 <p className="text-sm font-medium">
-                  {ticket.service.amount.toLocaleString(
+                  {totalValue.toLocaleString(
                     "pt-BR",
                     {
                       style: "currency",
@@ -396,8 +443,8 @@ export function Client() {
             </div>
 
           </div>
-
-        ))}
+          )
+})}
 
       </div>
 

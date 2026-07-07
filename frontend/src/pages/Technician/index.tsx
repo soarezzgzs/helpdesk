@@ -28,6 +28,12 @@ interface Ticket {
     name: string;
     amount: number;
   };
+
+  additionalServices: {
+    id: string;
+    description: string;
+    amount: number;
+  }[];
 }
 
 export function Technician() {
@@ -89,6 +95,8 @@ export function Technician() {
   }: {
     ticket: Ticket;
   }) {
+
+    const totalValue = ticket.service.amount + ticket.additionalServices.reduce((total, service) => total + service.amount, 0);
 
     return (
       <div
@@ -196,15 +204,35 @@ export function Technician() {
             ).toLocaleDateString("pt-BR")}
           </span>
 
-          <span className="font-semibold">
-            {ticket.service.amount.toLocaleString(
-              "pt-BR",
-              {
-                style: "currency",
-                currency: "BRL",
-              }
-            )}
-          </span>
+          <div className="text-right">
+
+  <p className="font-semibold">
+    {totalValue.toLocaleString(
+      "pt-BR",
+      {
+        style: "currency",
+        currency: "BRL",
+      }
+    )}
+  </p>
+
+  {ticket.additionalServices.length > 0 && (
+
+    <span
+      className="
+        text-xs
+        text-zinc-500
+      "
+    >
+      +{ticket.additionalServices.length}
+      {" "}
+      adicional
+      {ticket.additionalServices.length > 1 && "is"}
+    </span>
+
+  )}
+
+</div>
 
         </div>
 
