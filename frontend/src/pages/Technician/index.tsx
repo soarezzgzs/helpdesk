@@ -216,21 +216,6 @@ export function Technician() {
     )}
   </p>
 
-  {ticket.additionalServices.length > 0 && (
-
-    <span
-      className="
-        text-xs
-        text-zinc-500
-      "
-    >
-      +{ticket.additionalServices.length}
-      {" "}
-      adicional
-      {ticket.additionalServices.length > 1 && "is"}
-    </span>
-
-  )}
 
 </div>
 
