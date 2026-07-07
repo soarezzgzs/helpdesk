@@ -797,7 +797,6 @@ async function handleAddAdditionalService() {
             justify-between
             text-sm
             text-zinc-500
-            pl-3
           "
         >
 
